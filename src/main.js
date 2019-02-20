@@ -47,13 +47,13 @@ const getRandomNumber = (min = 0, max = 30) => {
 /**
  *  Функция для отрисовки отдельного фильтра
  * @param {String} id - id фильтра
- * @param {Number} amount - кол-во элементов в фильтре
+ * @param {Number} [amount=0] - кол-во элементов в фильтре (если не задано - ставим 0)
  * @param {boolean} [isChecked=false] - если true - ставим аттрибут checked (по умолчанию false)
  * @param {boolean} [isDisabled=false] - если true - ставим аттрибут disabled (по умолчанию false)
  * @returns {Object} - шаблон с заполненными данными
  */
-const renderSingleFilter = (id, amount, isChecked = false, isDisabled = false) => {
-  return `
+const renderSingleFilter = (id, amount = 0, isChecked = false, isDisabled = false) =>
+  `
   <input
     type="radio"
     id="filter__${id.toLowerCase()}"
@@ -66,8 +66,8 @@ const renderSingleFilter = (id, amount, isChecked = false, isDisabled = false) =
     ${id.toLowerCase()}
     <span class="filter__archive-count">${amount}</span><
   /label>
-  `;
-};
+  `
+;
 
 const renderSingleCard = (textAreaValue, hasDate = false, hasRepeat = false) => {
   return `
