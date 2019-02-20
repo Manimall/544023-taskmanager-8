@@ -32,7 +32,6 @@ const filters = [
     amount: getRandomNumber(),
     isChecked: true
   },
-
   {
     id: `Favorites`,
     amount: getRandomNumber()
