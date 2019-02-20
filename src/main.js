@@ -68,8 +68,14 @@ const renderSingleFilter = (id, amount = 0, isChecked = false, isDisabled = fals
   /label>
   `
 ;
-
-const renderSingleCard = (textAreaValue, hasDate = false, hasRepeat = false) => {
+/**
+ *
+ * @param {string} [textAreaValue=``]
+ * @param {boolean} [hasDate=false]
+ * @param {boolean} [hasRepeat=false]
+ * @returns
+ */
+const renderSingleCard = (textAreaValue = ``, hasDate = false, hasRepeat = false) => {
   return `
   <article class="card card--edit card--black">
   <form class="card__form" method="get">
