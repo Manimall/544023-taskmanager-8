@@ -218,13 +218,18 @@ const insertCardsBlock = (cardsBlock, cardsAmount) => {
   cardsBlock.innerHTML = renderedCards;
 };
 
+/**
+ * Функция - обработчик события клика на фильтр;
+ * она очищает контейнер карточек от ранее созданных задач и добавляет случайное количество новых задач
+ * @param {evt} evt - событие, на котором зафиксирован клик
+ */
 const filterClickHandler = (evt) => {
   const clickedFilter = evt.target.closest(`.filter__label`);
   if (clickedFilter) {
-    let clickedfilterAmount = clickedFilter.querySelector(`span`);
+    let clickedFilterAmount = clickedFilter.querySelector(`span`);
     const randomNewTasksNumber = getRandomNumber();
-    clickedfilterAmount.textContent = randomNewTasksNumber;
-    insertCardsBlock(cardsSection, clickedfilterAmount.textContent);
+    clickedFilterAmount.textContent = randomNewTasksNumber;
+    insertCardsBlock(cardsSection, clickedFilterAmount.textContent);
   }
 };
 
@@ -233,4 +238,4 @@ insertFiltersBlock(filterSection);
 insertCardsBlock(cardsSection, START_CARDS_COUNT);
 
 // добавляем обработчик события click для отрисованных фильтров
-document.body.addEventListener(`click`, filterClickHandler);
+filterSection.addEventListener(`click`, filterClickHandler);
