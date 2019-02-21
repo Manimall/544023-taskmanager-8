@@ -1,6 +1,9 @@
 'use strict';
 
 const filterSection = document.querySelector(`.main__filter`); // секция, куда нужно вставить сгенерированные фильтры
+const cardsSection = document.querySelector(`.board__tasks`); // секция для вставки сгенерированных карточек
+
+const START_CARDS_COUNT = 7; // изначальное кол-во карточек
 
 /**
  * Ищем случайное число (от включительно и до включительно)
@@ -12,7 +15,7 @@ const getRandomNumber = (min = 0, max = 30) => {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
-// массив с данными фильтров, содержащий следующие данные, для каждого фильтра:
+// Массив с данными фильтров, содержащий следующие данные, для каждого фильтра:
 // id фильтра (строка), amount - кол-во элементов в фильтре, атрибут checked (по умолчанию false), аттрибут disabled (по умолчанию false)
 const filters = [
   {
@@ -74,17 +77,13 @@ const renderSingleFilter = (filterData) =>
   `
 ;
 
-
-// const renderedFilter1 = filters.map(renderSingleFilter); // for example
-
 /**
- * Вставляем массив фильтров в нужный блок в разметку
- *
- * @param {HTMLElement} insertSection - элемент для вставки массива фильтров
+ * Вставляем разметку фильтров в нужный блок на страницу
+ * @param {HTMLElement} filterBlock - элемент для вставки массива фильтров
  */
-const insertFiltersBlock = (insertSection) => {
-  const renderedFilter = filters.map(renderSingleFilter).join(``);
-  insertSection.insertAdjacentHTML(`afterbegin`, renderedFilter);
+const insertFiltersBlock = (filterBlock) => {
+  const renderedFilter = filters.map(renderSingleFilter).join(``); // делаем из массива строку
+  filterBlock.insertAdjacentHTML(`afterbegin`, renderedFilter);
 };
 
 /**
@@ -94,8 +93,8 @@ const insertFiltersBlock = (insertSection) => {
  * @param {boolean} [hasRepeat=false] - нужно ли выполнять данную карточку несколько раз
  * @return {String} - разметку (строку с заполненными данными)
  */
-const renderSingleCard = (textAreaValue = ``, hasDate = false, hasRepeat = false) =>
-  `
+const renderSingleCard = (textAreaValue = ``, hasDate = false, hasRepeat = false) => {
+  return `
   <article class="card card--edit card--black">
     <form class="card__form" method="get">
       <div class="card__inner">
@@ -201,7 +200,23 @@ const renderSingleCard = (textAreaValue = ``, hasDate = false, hasRepeat = false
       </div>
     </form>
   </article>
-  `
-;
+  `;
+};
+
+/**
+ * Вставляем отрисованные карточки в разметку в нужный блок на странице
+ * @param {HTMLElement} cardsBlock - элемент, в который мы поместим все карточки
+ * @param {number} cardsAmount - кол-во карточек, которые надо отрисовать
+ */
+const insertCardsBlock = (cardsBlock, cardsAmount) => {
+  let renderedCardsArray = [];
+  for (let i = 0; i < cardsAmount; i++) {
+    renderedCardsArray.push(renderSingleCard()); // заполненный массив карточек
+  }
+  const renderedCards = renderedCardsArray.join(``); // делаем из массива строку
+
+  cardsBlock.innerHTML = renderedCards;
+};
 
 insertFiltersBlock(filterSection);
+insertCardsBlock(cardsSection, START_CARDS_COUNT);
