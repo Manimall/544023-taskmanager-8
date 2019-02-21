@@ -8,10 +8,10 @@ const START_CARDS_COUNT = 7; // изначальное кол-во карточ�
 /**
  * Ищем случайное число (от включительно и до включительно)
  * @param {number} [min=0] - минимальное кол-во задач
- * @param {number} [max=30] - максимальное кол-во задач
+ * @param {number} [max=10] - максимальное кол-во задач
  * @return {number} - случайное число - (кол-во тасков у любого фультра)
  */
-const getRandomNumber = (min = 0, max = 30) => {
+const getRandomNumber = (min = 0, max = 10) => {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
@@ -72,7 +72,7 @@ const renderSingleFilter = (filterData) =>
   >
   <label for="filter__${filterData.id.toLowerCase()}" class="filter__label">
     ${filterData.id.toLowerCase()}
-    <span class="filter__archive-count">${filterData.amount}</span>
+    <span class="filter__${filterData.id.toLowerCase()}-count">${filterData.amount}</span>
   </label>
   `
 ;
@@ -218,5 +218,19 @@ const insertCardsBlock = (cardsBlock, cardsAmount) => {
   cardsBlock.innerHTML = renderedCards;
 };
 
+const filterClickHandler = (evt) => {
+  const clickedFilter = evt.target.closest(`.filter__label`);
+  if (clickedFilter) {
+    let clickedfilterAmount = clickedFilter.querySelector(`span`);
+    const randomNewTasksNumber = getRandomNumber();
+    clickedfilterAmount.textContent = randomNewTasksNumber;
+    insertCardsBlock(cardsSection, clickedfilterAmount.textContent);
+  }
+};
+
+// вставляем карточки с тасками и фильтры на страницу
 insertFiltersBlock(filterSection);
 insertCardsBlock(cardsSection, START_CARDS_COUNT);
+
+// добавляем обработчик события click для отрисованных фильтров
+document.body.addEventListener(`click`, filterClickHandler);
