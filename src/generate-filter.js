@@ -1,4 +1,5 @@
-import {getRandomNumber} from 'helpers';
+// Импорт относительно текущего модуля
+import {getRandomNumber} from './helpers.js';
 
 // Массив с данными фильтров, содержащий следующие данные, для каждого фильтра:
 // id фильтра (строка), amount - кол-во элементов в фильтре, атрибут checked (по умолчанию false), аттрибут disabled (по умолчанию false)
