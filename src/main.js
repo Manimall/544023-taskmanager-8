@@ -1,6 +1,7 @@
 // Импорт относительно текущего модуля
 import {getRandomNumber} from './helpers.js';
-import {filters, renderSingleFilter} from './generate-filter.js';
+import {filters} from './filters-data.js';
+import {renderSingleFilter} from './generate-filter.js';
 import generateSingleCard from './generate-task.js';
 
 const filterSection = document.querySelector(`.main__filter`); // секция, куда нужно вставить сгенерированные фильтры
