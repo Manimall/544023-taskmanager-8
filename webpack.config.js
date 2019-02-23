@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const path = require(`path`); // подключаем native utility module из Ноды
 
 // объект конфигурации webPack
