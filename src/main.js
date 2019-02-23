@@ -2,7 +2,7 @@
 import {getRandomNumber} from './helpers.js';
 import {filters} from './filters-data.js';
 import {renderSingleFilter} from './generate-filter.js';
-import generateSingleCard from './generate-task.js';
+import {generateSingleCard} from './generate-task.js';
 
 const filterSection = document.querySelector(`.main__filter`); // секция, куда нужно вставить сгенерированные фильтры
 const cardsSection = document.querySelector(`.board__tasks`); // секция для вставки сгенерированных карточек

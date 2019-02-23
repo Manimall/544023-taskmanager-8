@@ -3,7 +3,7 @@ import {getRandomNumber} from './helpers.js';
 
 // Массив с данными фильтров, содержащий следующие данные, для каждого фильтра:
 // id фильтра (строка), amount - кол-во элементов в фильтре, атрибут checked (по умолчанию false), аттрибут disabled (по умолчанию false)
-const filters = [
+export const filters = [
   {
     id: `All`,
     amount: getRandomNumber(),
@@ -40,5 +40,3 @@ const filters = [
     amount: getRandomNumber()
   }
 ];
-
-export {filters};

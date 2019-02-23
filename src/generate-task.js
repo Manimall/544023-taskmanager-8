@@ -5,7 +5,7 @@
  * @param {boolean} [hasRepeat=false] - нужно ли выполнять данную карточку несколько раз
  * @return {String} - разметку (строку с заполненными данными)
  */
-export default (textAreaValue = ``, hasDate = false, hasRepeat = false) => {
+export const generateSingleCard = (textAreaValue = ``, hasDate = false, hasRepeat = false) => {
   return `
   <article class="card card--edit card--black">
     <form class="card__form" method="get">
