@@ -43,7 +43,7 @@ export const generateSingleCard = (card) => {
 
               <fieldset class="card__date-deadline" disabled="">
                 <label class="card__input-deadline-wrap">
-                  <input class="card__date" type="text" name="date" value="${card.dueDate}" placeholder="${card.dueDate}">
+                  <input class="card__date" type="text" name="date" value="${card.dueDate}" placeholder="${card.dueDate.toLocaleString()}">
                 </label>
                 <label class="card__input-deadline-wrap">
                   <input class="card__time" type="text" PM" name="time" value="${card.dueDate}" placeholder="${card.dueDate}">

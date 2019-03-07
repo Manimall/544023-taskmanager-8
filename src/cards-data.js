@@ -30,10 +30,16 @@ const tags = new Set([
   `angular`
 ]);
 
+const generateMockDate = () => {
+  const MS_IN_WEEK = 1000 * 60 * 60 * 24 * 7;
+  const dateNow = new Date();
+  return new Date(getRandomNumber(dateNow.getTime() - MS_IN_WEEK, dateNow.getTime() + MS_IN_WEEK));
+};
+
 // данные карточки - объект со следующими полями
 export const card = {
   title: titles[Math.floor(Math.random() * titles.length)], // Случайная строка из трех на выбор
-  dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000, // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
+  dueDate: generateMockDate(), // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
   tags: [...tags].slice(MIN_HASHTAGS_NUM, getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
   picture: `http://picsum.photos/100/100?r=${Math.random()})`, // URL до рандомной картинки
   color: colors[Math.floor(Math.random() * colors.length)], // Строка, описывающая цвет карточки - одно значение из массива
