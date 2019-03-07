@@ -1,3 +1,8 @@
+/**
+ * Генерируем Хэштеги для таска
+ * @param {Set} hashTagsSet - Сет допустимых хэштегов
+ * @return {String} - заполненную строку (разметку) с переданными хэштегами
+ */
 export const generateTags = (hashTagsSet) => {
   return [...hashTagsSet]
   .map((item) => `

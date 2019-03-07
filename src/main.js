@@ -1,14 +1,14 @@
 // Импорт относительно текущего модуля
 import {getRandomNumber} from './helpers.js';
 import {filters} from './filters-data.js';
-import {card} from './cards-data.js';
+import {createCard} from './tasks-data.js';
 import {renderSingleFilter} from './generate-filter.js';
 import {generateSingleCard} from './generate-task.js';
 
 const filterSection = document.querySelector(`.main__filter`); // секция, куда нужно вставить сгенерированные фильтры
 const cardsSection = document.querySelector(`.board__tasks`); // секция для вставки сгенерированных карточек
 
-const START_CARDS_COUNT = 7; // изначальное кол-во карточек
+const START_CARDS_COUNT = 7; // изначальное кол-во карточек по ТЗ
 
 /**
  * Вставляем разметку фильтров в нужный блок на страницу
@@ -26,8 +26,8 @@ const insertFiltersBlock = (filterBlock) => {
  */
 const insertCardsBlock = (cardsBlock, cardsAmount) => {
   const renderedCards = new Array(parseInt(cardsAmount, 10)) // создаем пустой массив из необходимого кол-ва объектов
-    .fill(generateSingleCard(card)) // заполняем этот массив 7 undefined
-    // .map(generateSingleCard(card)) // создаем новый массив, выполнив функцию generateSingleCard на каждом элементе массива
+    .fill() // заполняем этот массив 7 undefined
+    .map(() => generateSingleCard(createCard())) // изменяем массив, выполнив функцию generateSingleCard на каждом элементе массива
     .join(``); // превращаем массив в строку
 
   cardsBlock.innerHTML = renderedCards;

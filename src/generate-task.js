@@ -1,13 +1,14 @@
 import {generateTags} from './generate-hashtag.js';
+import {generateRepeatingDays} from './generate-repeating-days.js';
 
 /**
  * Отрисовываем шаблон карточки (разметку отдельной карточки)
  * @param {Object} card - Объект с данными одной карточки
  * @return {String} - разметку (строку с заполненными данными)
  */
-export const generateSingleCard = (card) => {
+export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture}) => {
   return `
-  <article class="card card--edit card--${card.color}">
+  <article class="card card--edit card--${color}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
@@ -30,7 +31,7 @@ export const generateSingleCard = (card) => {
 
         <div class="card__textarea-wrap">
           <label>
-            <textarea class="card__text" placeholder="Start typing your text here..." name="text">${card.title}</textarea>
+            <textarea class="card__text" placeholder="Start typing your text here..." name="text">${title}</textarea>
           </label>
         </div>
 
@@ -38,45 +39,42 @@ export const generateSingleCard = (card) => {
           <div class="card__details">
             <div class="card__dates">
               <button class="card__date-deadline-toggle" type="button">
-                date: <span class="card__date-status">${card.dueDate ? `yes` : `no`}</span>
+                date: <span class="card__date-status">${hasDeadline ? `yes` : `no`}</span>
               </button>
 
               <fieldset class="card__date-deadline" disabled="">
                 <label class="card__input-deadline-wrap">
-                  <input class="card__date" type="text" name="date" value="${card.dueDate}" placeholder="${card.dueDate.toLocaleString()}">
+                  <input class="card__date"
+                         type="text"
+                         name="date"
+                         value="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
+                         placeholder="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
+                  >
                 </label>
                 <label class="card__input-deadline-wrap">
-                  <input class="card__time" type="text" PM" name="time" value="${card.dueDate}" placeholder="${card.dueDate}">
+                  <input class="card__time"
+                         type="text" PM"
+                         name="time"
+                         value="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
+                         placeholder="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
+                  >
                 </label>
               </fieldset>
 
               <button class="card__repeat-toggle" type="button">
-                repeat:<span class="card__repeat-status">${card.hasRepeat ? `yes` : `no`}</span>
+                repeat:<span class="card__repeat-status">${hasRepeat ? `yes` : `no`}</span>
               </button>
 
               <fieldset class="card__repeat-days" disabled="">
                 <div class="card__repeat-days-inner">
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-mo-1" name="repeat" value="mo" ${card.repeatingDays.mo ? `checked` : ``}>
-                  <label class="card__repeat-day" for="repeat-mo-1">mo</label>
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-tu-1" name="repeat" value="tu" ${card.repeatingDays.tu ? `checked` : ``}>
-                  <label class="card__repeat-day" for="repeat-tu-1">tu</label>
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-we-1" name="repeat" value="we" ${card.repeatingDays.we ? `checked` : ``}>
-                  <label class="card__repeat-day" for="repeat-we-1">we</label>
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-th-1" name="repeat" value="th" ${card.repeatingDays.th ? `checked` : ``}>
-                  <label class="card__repeat-day" for="repeat-th-1">th</label>
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-fr-1" name="repeat" value="fr" ${card.repeatingDays.fr ? `checked` : ``}>
-                  <label class="card__repeat-day" for="repeat-fr-1">fr</label>
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" name="repeat" value="sa" id="repeat-sa-1" ${card.repeatingDays.sa ? `checked` : ``}>
-                  <label class="card__repeat-day" for="repeat-sa-1">sa</label>
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-su-1" name="repeat" value="su" ${card.repeatingDays.su ? `checked` : ``}>
-                  <label class="card__repeat-day" for="repeat-su-1">su</label>
+                  ${generateRepeatingDays(repeatingDays)}
                 </div>
               </fieldset>
             </div>
 
             <div class="card__hashtag">
               <div class="card__hashtag-list">
-                ${generateTags(card.tags)}
+                ${generateTags(tags)}
               </div>
 
               <label>
@@ -87,7 +85,7 @@ export const generateSingleCard = (card) => {
 
           <label class="card__img-wrap card__img-wrap--empty">
             <input type="file" class="card__img-input visually-hidden" name="img">
-            <img src="${card.picture}" alt="task picture" class="card__img">
+            <img src="${picture}" alt="task picture" class="card__img">
           </label>
 
           <div class="card__colors-inner">
