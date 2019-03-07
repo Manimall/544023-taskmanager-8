@@ -10,7 +10,7 @@ export const card = {
     `Сделать домашку`,
     `Пройти интенсив на соточку`
   ][Math.floor(Math.random() * card.title.length)], // Случайная строка из трех на выбор
-  dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000, // Дата запланированного выполнения (число в пределах недели от текущего момента)
+  dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000, // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
   tags: new Set([
     `homework`,
     `intensive`,
