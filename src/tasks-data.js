@@ -61,7 +61,7 @@ export const createCard = () => {
   return {
     title: titles[Math.floor(Math.random() * titles.length)], // Случайная строка из трех на выбор
     dueDate: generateMockDate(), // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
-    tags: [...tags].slice(MIN_HASHTAGS_NUM, getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
+    tags: [...tags].splice(getRandomNumber(undefined, tags.size), getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
     picture: `http://picsum.photos/100/100?r=${Math.random()})`, // URL до рандомной картинки
     color: colors[Math.floor(Math.random() * colors.length)], // Строка, описывающая цвет карточки - одно значение из массива
     repeatingDays,
