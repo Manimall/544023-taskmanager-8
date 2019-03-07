@@ -5,21 +5,21 @@
  */
 export const generateRepeatingDays = (repeatingDays) => {
   let resultString = ``;
-  for (let key in repeatingDays) {
+  Object.keys(repeatingDays).map((key) => {
     if (repeatingDays.hasOwnProperty(key)) {
       resultString += `
         <input class="visually-hidden card__repeat-day-input"
-               type="checkbox"
-               id="repeat-${key}-1"
-               name="repeat"
-               value="${key}"
-               ${repeatingDays[key] ? `checked` : ``}
+                type="checkbox"
+                id="repeat-${key}-1"
+                name="repeat"
+                value="${key}"
+                ${repeatingDays[key] ? `checked` : ``}
         >
         <label class="card__repeat-day" for="repeat-${key}-1">
           ${key}
         </label>
       `;
     }
-  }
+  });
   return resultString;
 };
