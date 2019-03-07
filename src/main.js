@@ -1,6 +1,7 @@
 // Импорт относительно текущего модуля
 import {getRandomNumber} from './helpers.js';
 import {filters} from './filters-data.js';
+import {card} from './cards-data.js';
 import {renderSingleFilter} from './generate-filter.js';
 import {generateSingleCard} from './generate-task.js';
 
@@ -26,7 +27,7 @@ const insertFiltersBlock = (filterBlock) => {
 const insertCardsBlock = (cardsBlock, cardsAmount) => {
   const renderedCards = new Array(parseInt(cardsAmount, 10)) // создаем пустой массив из необходимого кол-ва объектов
     .fill() // заполняем этот массив 7 undefined
-    .map(generateSingleCard) // создаем новый массив, выполнив функцию generateSingleCard на каждом элементе массива
+    .map(generateSingleCard(card)) // создаем новый массив, выполнив функцию generateSingleCard на каждом элементе массива
     .join(``); // превращаем массив в строку
 
   cardsBlock.innerHTML = renderedCards;
