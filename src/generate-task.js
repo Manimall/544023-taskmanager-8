@@ -56,7 +56,7 @@ export const generateSingleCard = (card) => {
 
               <fieldset class="card__repeat-days" disabled="">
                 <div class="card__repeat-days-inner">
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-mo-1" name="repeat" value="mo" ${card.repeatingDays.mo ? `checked' : ``}>
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-mo-1" name="repeat" value="mo" ${card.repeatingDays.mo ? `checked` : ``}>
                   <label class="card__repeat-day" for="repeat-mo-1">mo</label>
                   <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-tu-1" name="repeat" value="tu" ${card.repeatingDays.tu ? `checked` : ``}>
                   <label class="card__repeat-day" for="repeat-tu-1">tu</label>
