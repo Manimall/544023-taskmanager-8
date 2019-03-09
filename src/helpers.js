@@ -10,9 +10,8 @@ const getRandomNumber = (min = 0, max = 10) => {
 
 /**
  * Возвращаем true или false от функции getRandomNumber и сравниваем с медианой
- * @param {number} [max=10] - медиана (среднее занчение в диапазоне)
  * @return {boolean} - true или false
  */
-const returnTrueOrFalse = (max = 10) => getRandomNumber() > max / 2 ? true : false;
+const returnTrueOrFalse = () => Math.random() > 0.5;
 
 export {getRandomNumber, returnTrueOrFalse};

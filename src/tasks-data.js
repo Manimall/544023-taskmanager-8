@@ -4,6 +4,8 @@ import {getRandomNumber, returnTrueOrFalse} from './helpers.js';
 const MIN_HASHTAGS_NUM = 0; // минимально допустимое кол-во тегов
 const MAX_HASHTAGS_NUM = 3; // максимальное кол-во тегов по ТЗ
 
+const MS_IN_WEEK = 1000 * 60 * 60 * 24 * 7; // кол-во миллисекунд в неделю
+
 // массив заголовков для тасков
 const titles = [
   `Изучить теорию`,
@@ -38,7 +40,6 @@ const tags = new Set([
  * @return {Number} - числовое значение, соответствующее текущему времени — количество миллисекунд, прошедших с 1 января 1970 года 00:00:00 по UTC
  */
 const generateMockDate = () => {
-  const MS_IN_WEEK = 1000 * 60 * 60 * 24 * 7;
   const dateNow = new Date();
   return new Date(getRandomNumber(dateNow.getTime() - MS_IN_WEEK, dateNow.getTime() + MS_IN_WEEK));
 };
