@@ -22,7 +22,7 @@ module.exports = {
   },
   devServer: { // настройки дев-сервера
     contentBase: path.join(__dirname, `public`), // директория для поиска сборки
-    publicPath: `http://localhost:8080/`, // веб адрес сборки
+    publicPath: `http://localhost:8082/`, // веб адрес сборки
     hot: true, // автоматическая перезагрузка страницы
     compress: true // сжатие файла сборки
   }
