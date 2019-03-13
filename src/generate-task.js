@@ -1,14 +1,15 @@
 import {generateTags} from './generate-hashtag.js';
 import {generateRepeatingDays} from './generate-repeating-days.js';
+import {isRepeating} from './tasks-data.js';
 
 /**
  * Отрисовываем шаблон карточки (разметку отдельной карточки)
  * @param {Object} card - Объект с данными одной карточки
  * @return {String} - разметку (строку с заполненными данными)
  */
-export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture}) => {
+export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, id}) => {
   return `
-  <article class="card card--edit card--${color}">
+  <article class="card card--edit card--${color} ${isRepeating(repeatingDays) ? `card--repeat` : ``}" id="${id}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
@@ -53,7 +54,7 @@ export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepea
                 </label>
                 <label class="card__input-deadline-wrap">
                   <input class="card__time"
-                         type="text" PM"
+                         type="text"
                          name="time"
                          value="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
                          placeholder="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"

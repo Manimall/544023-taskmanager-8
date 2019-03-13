@@ -44,11 +44,17 @@ const generateMockDate = () => {
   return new Date(getRandomNumber(dateNow.getTime() - MS_IN_WEEK, dateNow.getTime() + MS_IN_WEEK));
 };
 
+export const isRepeating = (days) => {
+  return Object.values(days).some((day) => day === true);
+};
+
 /**
  * Создаем карточки сопределенными по ТЗ данными
+ * @param {Object} card - обьект карточки
+ * @param {Number} id - id (index) карточки
  * @return {Object} - Card - одну карточку
  */
-export const createCard = () => {
+export const createCard = (card, id) => {
   const repeatingDays = { // дни недели, в которые задача повторяется или не повторяется
     'mo': returnTrueOrFalse(),
     'tu': returnTrueOrFalse(),
@@ -59,7 +65,7 @@ export const createCard = () => {
     'su': returnTrueOrFalse(),
   };
 
-  return {
+  card = {
     title: titles[Math.floor(Math.random() * titles.length)], // Случайная строка из трех на выбор
     dueDate: generateMockDate(), // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
     tags: [...tags].splice(getRandomNumber(undefined, tags.size), getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
@@ -70,6 +76,10 @@ export const createCard = () => {
     hasRepeat: returnTrueOrFalse(), // повторяется ли данная карточка
     isFavorite: returnTrueOrFalse(), // Булево значение сообщающее, добавлена ли задача в избранное.
     isDone: returnTrueOrFalse(), // Булево значение сообщающее, выполнена ли задача
+    isRepeating: isRepeating(repeatingDays), // повторяемая ли карточка
+    id // id карточки
   };
+
+  return card;
 };
 

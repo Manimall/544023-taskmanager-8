@@ -27,7 +27,7 @@ const insertFiltersBlock = (filterBlock) => {
 const insertCardsBlock = (cardsBlock, cardsAmount) => {
   const renderedCards = new Array(parseInt(cardsAmount, 10)) // создаем пустой массив из необходимого кол-ва объектов
     .fill() // заполняем этот массив 7 undefined
-    .map(() => generateSingleCard(createCard())) // изменяем массив, выполнив функцию generateSingleCard на каждом элементе массива
+    .map((card, index) => generateSingleCard(createCard(card, index))) // изменяем массив, выполнив функцию generateSingleCard на каждом элементе массива
     .join(``); // превращаем массив в строку
 
   cardsBlock.innerHTML = renderedCards;
