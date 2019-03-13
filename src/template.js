@@ -7,10 +7,10 @@ import {isRepeating} from './tasks-data.js';
  * @param {Object} card - Объект с данными одной карточки
  * @return {String} - разметку (строку с заполненными данными)
  */
-export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, id, isEdit}) => {
-  return `
-  <article class="card ${isEdit ? `card--edit` : ``} ${isRepeating(repeatingDays) ? `card--repeat` : ``} card--${color} " id="${id}">
-    <form class="card__form" method="get">
+const createTemplate = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, id, isEdit}) => {
+  return (
+    `<article class="card ${isEdit ? `card--edit` : ``} ${isRepeating(repeatingDays) ? `card--repeat` : ``} card--${color} " id="${id}">
+      <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
           <button type="button" class="card__btn card__btn--edit">
@@ -112,6 +112,10 @@ export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepea
         </div>
       </div>
     </form>
-  </article>
-  `;
+  </article>`
+  );
 };
+
+export {createTemplate};
+
+

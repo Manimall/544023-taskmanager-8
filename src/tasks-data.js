@@ -77,7 +77,8 @@ export const createCard = (card, id) => {
     isFavorite: returnTrueOrFalse(), // Булево значение сообщающее, добавлена ли задача в избранное.
     isDone: returnTrueOrFalse(), // Булево значение сообщающее, выполнена ли задача
     isRepeating: isRepeating(repeatingDays), // повторяемая ли карточка
-    id // id карточки
+    id,
+    isEdit: returnTrueOrFalse() // id карточки
   };
 
   return card;

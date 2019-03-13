@@ -17,10 +17,19 @@ class Task {
   render(getTemplate, placeToInsert) {
     const templateArgs = {
       title = this._title,
-      tags = 
+      tags = this._obj.tags
 
     }
   }
+
+  const createTempalate = () => {
+    return (
+     `<div>
+      <div>Title</div>
+      <div>Content</div>
+     </div>`
+    );
+   }
 
 
 };
