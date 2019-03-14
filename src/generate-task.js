@@ -9,7 +9,12 @@ import {isRepeating} from './tasks-data.js';
  */
 export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, id, isEdit}) => {
   return `
-  <article class="card ${isEdit ? `card--edit` : ``} ${isRepeating(repeatingDays) ? `card--repeat` : ``} card--${color} " id="${id}">
+  <article class="card
+          ${isEdit ? `card--edit` : ``}
+          ${isRepeating(repeatingDays) ? `card--repeat` : ``}
+          card--${color}"
+          id="${id}"
+  >
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">

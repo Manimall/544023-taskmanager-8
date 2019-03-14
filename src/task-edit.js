@@ -1,4 +1,4 @@
-export class Task {
+export class TaskEdit {
   constructor(obj) {
     this._title = obj.title;
     this._dueDate = obj.dueDate;
@@ -22,18 +22,18 @@ export class Task {
       isEdit: false,
     };
 
-    this._onEdit = null;
-    this._onEditButtonClick = this._onEditButtonClick.bind(this);
+    this._onSubmit = null;
+    this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
   }
 
   render(getTemplate) {
     const newElement = document.createElement(`div`);
+
     const templateArgs = {
       title: this._title,
       id: this._id,
 
       isRepeating: this._isRepeating,
-      // isEdit: this._isEdit,
 
       dueDate: this._dueDate,
       repeatingDays: this._repeatingDays,
@@ -47,6 +47,8 @@ export class Task {
 
       isFavorite: this._isFavorite,
       isDone: this._isDone,
+
+      isEdit: this._isEdit,
     };
 
     newElement.innerHTML = getTemplate(templateArgs);
@@ -54,28 +56,24 @@ export class Task {
     return this._element;
   }
 
-  unrender() {
-    this._element = null;
-  }
-
-  set onEdit(fn) {
-    this._onEdit = fn;
-  }
-
-  _onEditButtonClick() {
-    if (typeof this._onEdit === `function`) {
-      this._onEdit();
+  _onSubmitButtonClick(evt) {
+    evt.preventDefault();
+    if (typeof this._onSubmit === `function`) {
+      this._onSubmit();
     }
   }
 
+  set onSubmit(fn) {
+    this._onSubmit = fn;
+  }
+
   bind() {
-    this._element.querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, this._onEditButtonClick);
+    this._element.querySelector(`.card__form`)
+      .addEventListener(`submit`, this._onSubmitButtonClick);
   }
 
   unbind() {
-    this._color._element.querySelector(`.card__btn--edit`)
-      .removeEventListener(`click`, this._onEditButtonClick);
+    this._elementment.querySelector(`.card__form`)
+      .removeEventListener(`submit`, this._onSubmitButtonClick);
   }
-
 }
