@@ -38,23 +38,28 @@ const insertFiltersBlock = (filterBlock) => {
 
 const tasks = (cardsAmount) => {
   return new Array(parseInt(cardsAmount, 10))
-    .fill()
+    .fill(null)
     .map(() => {
       const data = createCard();
 
       const task = new Task(data);
-      const editTask = new TaskEdit(data);
+      const taskEdit = new TaskEdit(data);
 
       task.onEdit = () => {
-        editTask.render();
-        taskContainer(editTask.element, task.element);
+        taskEdit.render();
+        taskContainer(taskEdit.element, task.element);
         task.unrender();
       };
 
-      editTask.onSubmit = () => {
+      taskEdit.onSubmit = () => {
         task.render();
-        taskContainer(task.element, editTask.element);
-        editTask.unrender();
+        taskContainer(task.element, taskEdit.element);
+        taskEdit.unrender();
+      };
+
+      return {
+        task,
+        taskEdit
       };
     });
 };
@@ -71,13 +76,22 @@ const filterClickHandler = (evt) => {
     const randomNewTasksNumber = getRandomNumber();
     clickedFilterAmount.textContent = randomNewTasksNumber;
 
-    taskContainer.appendChild(tasks(TASKS_COUNT).task.render(createTemplate));
+    // taskContainer.appendChild(tasks(TASKS_COUNT));
+    // taskContainer.appendChild(tasks(TASKS_COUNT).task.render(createTemplate));
     // insertCardsBlock(taskContainer, clickedFilterAmount.textContent);
   }
 };
 
 // вставляем карточки с тасками и фильтры на страницу
 insertFiltersBlock(filterSection);
+
+console.log(tasks(TASKS_COUNT));
+console.log(tasks(TASKS_COUNT).forEach(task => console.log(task)));
+
+console.log(tasks(TASKS_COUNT).forEach((task) => {
+  task.render(createTemplate(task));
+}));
+// console.log(taskContainer.appendChild(smth));
 taskContainer.appendChild(tasks(TASKS_COUNT).task.render(createTemplate()));
 // insertCardsBlock(taskContainer, TASKS_COUNT);
 
