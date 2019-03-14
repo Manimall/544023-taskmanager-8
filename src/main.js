@@ -59,7 +59,7 @@ const tasks = (cardsAmount) => {
 
       return {
         task,
-        taskEdit
+        taskEdit,
       };
     });
 };
@@ -85,14 +85,12 @@ const filterClickHandler = (evt) => {
 // вставляем карточки с тасками и фильтры на страницу
 insertFiltersBlock(filterSection);
 
-console.log(tasks(TASKS_COUNT));
-console.log(tasks(TASKS_COUNT).forEach(task => console.log(task)));
+tasks(TASKS_COUNT).map((el, id) => {
+  console.log(el, id);
+  const smth = el.task.render(createTemplate);
+  taskContainer.appendChild(smth);
+});
 
-console.log(tasks(TASKS_COUNT).forEach((task) => {
-  task.render(createTemplate(task));
-}));
-// console.log(taskContainer.appendChild(smth));
-taskContainer.appendChild(tasks(TASKS_COUNT).task.render(createTemplate()));
 // insertCardsBlock(taskContainer, TASKS_COUNT);
 
 // добавляем обработчик события click для отрисованных фильтров
