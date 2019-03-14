@@ -84,7 +84,7 @@ export class Task {
   }
 
   unbind() {
-    this._color._element.querySelector(`.card__btn--edit`)
+    this._element.querySelector(`.card__btn--edit`)
       .removeEventListener(`click`, this._onEditButtonClick);
   }
 

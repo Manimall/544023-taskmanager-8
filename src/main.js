@@ -47,13 +47,13 @@ const tasks = (cardsAmount) => {
 
       // task.onEdit = () => {
       //   taskEdit.render();
-      //   taskContainer(taskEdit.element, task.element);
+      //   taskContainer.replaceChild(taskEdit.element, task.element);
       //   task.unrender();
       // };
 
       // taskEdit.onSubmit = () => {
       //   task.render();
-      //   taskContainer(task.element, taskEdit.element);
+      //   taskContainer.replaceChild(task.element, taskEdit.element);
       //   taskEdit.unrender();
       // };
 
@@ -99,13 +99,13 @@ tasks(TASKS_COUNT).forEach((el, index) => {
 
   singleTask._onEdit = () => {
     singleTaskEdit.render(createTemplate);
-    taskContainer(singleTaskEdit.element, singleTask.element);
+    taskContainer.replaceChild(singleTaskEdit._element, singleTask._element);
     singleTask.unrender();
   };
 
   singleTaskEdit._onSubmit = () => {
     singleTask.render(createTemplate);
-    taskContainer(singleTask.element, singleTaskEdit.element);
+    taskContainer.replaceChild(singleTask._element, singleTaskEdit._element);
     singleTaskEdit.unrender();
   };
 
