@@ -90,12 +90,9 @@ tasks(TASKS_COUNT).forEach((el, index) => {
   singleTask.id = index;
 
   const singleTaskEdit = el.taskEdit;
-  console.log(singleTaskEdit);
   singleTaskEdit.id = index;
 
   const renderedTask = singleTask.render(createTemplate);
-
-  console.log(singleTask);
 
   singleTask._onEdit = () => {
     singleTaskEdit.render(createTemplate);
