@@ -53,7 +53,13 @@ export class TaskEdit {
 
     newElement.innerHTML = getTemplate(templateArgs);
     this._element = newElement.firstChild;
+    this.bind();
     return this._element;
+  }
+
+  unrender() {
+    this.unbind();
+    this._element = null;
   }
 
   _onSubmitButtonClick(evt) {
@@ -61,6 +67,14 @@ export class TaskEdit {
     if (typeof this._onSubmit === `function`) {
       this._onSubmit();
     }
+  }
+
+  set id(id) {
+    this._id = id;
+  }
+
+  get id() {
+    return this._id;
   }
 
   set onSubmit(fn) {

@@ -45,17 +45,17 @@ const tasks = (cardsAmount) => {
       const task = new Task(data);
       const taskEdit = new TaskEdit(data);
 
-      task.onEdit = () => {
-        taskEdit.render();
-        taskContainer(taskEdit.element, task.element);
-        task.unrender();
-      };
+      // task.onEdit = () => {
+      //   taskEdit.render();
+      //   taskContainer(taskEdit.element, task.element);
+      //   task.unrender();
+      // };
 
-      taskEdit.onSubmit = () => {
-        task.render();
-        taskContainer(task.element, taskEdit.element);
-        taskEdit.unrender();
-      };
+      // taskEdit.onSubmit = () => {
+      //   task.render();
+      //   taskContainer(task.element, taskEdit.element);
+      //   taskEdit.unrender();
+      // };
 
       return {
         task,
@@ -85,10 +85,31 @@ const filterClickHandler = (evt) => {
 // вставляем карточки с тасками и фильтры на страницу
 insertFiltersBlock(filterSection);
 
-tasks(TASKS_COUNT).map((el, id) => {
-  console.log(el, id);
-  const smth = el.task.render(createTemplate);
-  taskContainer.appendChild(smth);
+tasks(TASKS_COUNT).forEach((el, index) => {
+  const singleTask = el.task;
+  singleTask.id = index;
+
+  const singleTaskEdit = el.taskEdit;
+  console.log(singleTaskEdit);
+  singleTaskEdit.id = index;
+
+  const renderedTask = singleTask.render(createTemplate);
+
+  console.log(singleTask);
+
+  singleTask._onEdit = () => {
+    singleTaskEdit.render(createTemplate);
+    taskContainer(singleTaskEdit.element, singleTask.element);
+    singleTask.unrender();
+  };
+
+  singleTaskEdit._onSubmit = () => {
+    singleTask.render(createTemplate);
+    taskContainer(singleTask.element, singleTaskEdit.element);
+    singleTaskEdit.unrender();
+  };
+
+  taskContainer.appendChild(renderedTask);
 });
 
 // insertCardsBlock(taskContainer, TASKS_COUNT);

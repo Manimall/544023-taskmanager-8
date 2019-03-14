@@ -51,10 +51,20 @@ export class Task {
 
     newElement.innerHTML = getTemplate(templateArgs);
     this._element = newElement.firstChild;
+    this.bind();
     return this._element;
   }
 
+  set id(id) {
+    this._id = id;
+  }
+
+  get id() {
+    return this._id;
+  }
+
   unrender() {
+    this.unbind();
     this._element = null;
   }
 
