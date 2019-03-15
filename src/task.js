@@ -33,7 +33,6 @@ export class Task {
       id: this._id,
 
       isRepeating: this._isRepeating,
-      // isEdit: this._isEdit,
 
       dueDate: this._dueDate,
       repeatingDays: this._repeatingDays,

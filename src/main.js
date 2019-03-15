@@ -20,28 +20,45 @@ const insertFiltersBlock = (filterBlock) => {
   filterBlock.insertAdjacentHTML(`afterbegin`, renderedFilter);
 };
 
-for (let i = 0; i < TASKS_COUNT; i++) {
-  const data = createCard();
+const createTasks = (cardsAmount) => {
+  return new Array(parseInt(cardsAmount, 10))
+    .fill(null)
+    .map(() => {
+      const data = createCard();
 
-  const task = new Task(data);
-  const taskEdit = new TaskEdit(data);
+      const task = new Task(data);
+      const taskEdit = new TaskEdit(data);
 
-  task.onEdit = () => {
-    taskEdit.render(generateEditTask);
-    taskContainer.replaceChild(taskEdit._element, task._element);
-    task.unrender();
+      return {
+        task,
+        taskEdit,
+      };
+    });
+};
+
+const tasksArr = createTasks(TASKS_COUNT);
+
+tasksArr.forEach((el) => {
+
+  const singleTask = el.task;
+  const singleTaskEdit = el.taskEdit;
+
+  const renderedTask = singleTask.render(generateDefaultTask);
+
+  singleTask.onEdit = () => {
+    singleTaskEdit.render(generateEditTask);
+    taskContainer.replaceChild(singleTaskEdit.element, singleTask.element);
+    singleTask.unrender();
   };
 
-  taskEdit.onSubmit = () => {
-    task.render(generateDefaultTask);
-    taskContainer.replaceChild(task._element, taskEdit._element);
-    taskEdit.unrender();
+  singleTaskEdit.onSubmit = () => {
+    singleTask.render(generateDefaultTask);
+    taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
+    singleTaskEdit.unrender();
   };
-
-  const renderedTask = task.render(generateDefaultTask);
 
   taskContainer.appendChild(renderedTask);
-}
+});
 
 /**
  * Функция - обработчик события клика на фильтр;
