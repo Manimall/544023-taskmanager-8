@@ -1,7 +1,11 @@
+
 export class Task {
+
   constructor(obj) {
     this._title = obj.title;
+    this._id = obj.id;
     this._dueDate = obj.dueDate;
+
 
     this._tags = obj.tags;
     this._picture = obj.picture;
@@ -54,17 +58,13 @@ export class Task {
     return this._element;
   }
 
-  set id(id) {
-    this._id = id;
+  unrender() {
+    this.unbind();
+    this._element = null;
   }
 
   get id() {
     return this._id;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
   }
 
   get element() {

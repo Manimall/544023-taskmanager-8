@@ -48,6 +48,11 @@ export const isRepeating = (days) => {
   return Object.values(days).some((day) => day === true);
 };
 
+export const getTaskUniqID = (id) => {
+  id = 0;
+  return id++;
+};
+
 /**
  * Создаем карточки сопределенными по ТЗ данными
  * @param {Object} card - обьект карточки
@@ -77,7 +82,7 @@ export const createCard = (card, id) => {
     isFavorite: returnTrueOrFalse(), // Булево значение сообщающее, добавлена ли задача в избранное.
     isDone: returnTrueOrFalse(), // Булево значение сообщающее, выполнена ли задача
     isRepeating: isRepeating(repeatingDays), // повторяемая ли карточка
-    id,
+    id: getTaskUniqID(id),
     isEdit: returnTrueOrFalse() // id карточки
   };
 
