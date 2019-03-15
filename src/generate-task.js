@@ -12,7 +12,7 @@ export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepea
   <article class="card
           ${isEdit ? `card--edit` : ``}
           ${isRepeating(repeatingDays) ? `card--repeat` : ``}
-          card--${color}"
+          ${color}"
           id="${id}"
   >
     <form class="card__form" method="get">

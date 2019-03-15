@@ -13,14 +13,14 @@ const titles = [
   `Пройти интенсив на соточку`
 ];
 
-// массив цветов для тасков
-const colors = [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`
-];
+// цвета для тасков
+const colors = {
+  blue: `card--blue`,
+  black: `card--black`,
+  yellow: `card--yellow`,
+  green: `card--green`,
+  pink: `card--pink`,
+};
 
 // Сет хэштегов для тасков
 const tags = new Set([
@@ -70,7 +70,7 @@ export const createCard = (card, id) => {
     dueDate: generateMockDate(), // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
     tags: [...tags].splice(getRandomNumber(undefined, tags.size), getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
     picture: `http://picsum.photos/100/100?r=${Math.random()})`, // URL до рандомной картинки
-    color: colors[Math.floor(Math.random() * colors.length)], // Строка, описывающая цвет карточки - одно значение из массива
+    color: Object.values(colors)[Math.floor(Math.random() * Object.keys(colors).length)], // Строка, описывающая цвет карточки - одно значение из массива
     repeatingDays,
     hasDeadline: returnTrueOrFalse(), // есть ли дедлайн у карточки
     hasRepeat: returnTrueOrFalse(), // повторяется ли данная карточка

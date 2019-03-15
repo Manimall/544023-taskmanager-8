@@ -19,7 +19,7 @@ export class TaskEdit {
     this._isRepeating = obj.isRepeating;
 
     this._state = {
-      isEdit: false,
+      isEdit: true,
     };
 
     this._onSubmit = null;
