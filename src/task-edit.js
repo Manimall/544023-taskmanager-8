@@ -48,7 +48,7 @@ export class TaskEdit {
       isFavorite: this._isFavorite,
       isDone: this._isDone,
 
-      isEdit: this._isEdit,
+      isEdit: this._state.isEdit,
     };
 
     newElement.innerHTML = getTemplate(templateArgs);
@@ -77,6 +77,10 @@ export class TaskEdit {
     return this._id;
   }
 
+  get element() {
+    return this._element;
+  }
+
   set onSubmit(fn) {
     this._onSubmit = fn;
   }
@@ -87,7 +91,7 @@ export class TaskEdit {
   }
 
   unbind() {
-    this._elementment.querySelector(`.card__form`)
+    this._element.querySelector(`.card__form`)
       .removeEventListener(`submit`, this._onSubmitButtonClick);
   }
 }

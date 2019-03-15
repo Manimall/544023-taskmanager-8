@@ -68,6 +68,10 @@ export class Task {
     this._element = null;
   }
 
+  get element() {
+    return this._element;
+  }
+
   set onEdit(fn) {
     this._onEdit = fn;
   }

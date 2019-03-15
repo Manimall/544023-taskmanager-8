@@ -20,21 +20,28 @@ const insertFiltersBlock = (filterBlock) => {
   filterBlock.insertAdjacentHTML(`afterbegin`, renderedFilter);
 };
 
-const createTasks = (cardsAmount) => {
-  return new Array(parseInt(cardsAmount, 10))
-    .fill(null)
-    .map(() => {
-      const data = createCard();
+for (let i = 0; i < TASKS_COUNT; i++) {
+  const data = createCard();
 
-      const task = new Task(data);
-      const taskEdit = new TaskEdit(data);
+  const task = new Task(data);
+  const taskEdit = new TaskEdit(data);
 
-      return {
-        task,
-        taskEdit,
-      };
-    });
-};
+  task.onEdit = () => {
+    taskEdit.render(generateEditTask);
+    taskContainer.replaceChild(taskEdit._element, task._element);
+    task.unrender();
+  };
+
+  taskEdit.onSubmit = () => {
+    task.render(generateDefaultTask);
+    taskContainer.replaceChild(task._element, taskEdit._element);
+    taskEdit.unrender();
+  };
+
+  const renderedTask = task.render(generateDefaultTask);
+
+  taskContainer.appendChild(renderedTask);
+}
 
 /**
  * Функция - обработчик события клика на фильтр;
@@ -52,30 +59,6 @@ const filterClickHandler = (evt) => {
 
 // вставляем карточки с тасками и фильтры на страницу
 insertFiltersBlock(filterSection);
-
-createTasks(TASKS_COUNT).forEach((el, index) => {
-  const singleTask = el.task;
-  singleTask.id = index;
-
-  const singleTaskEdit = el.taskEdit;
-  singleTaskEdit.id = index;
-
-  const renderedTask = singleTask.render(generateDefaultTask);
-
-  singleTask._onEdit = () => {
-    singleTaskEdit.render(generateEditTask);
-    taskContainer.replaceChild(singleTaskEdit._element, singleTask._element);
-    singleTask.unrender();
-  };
-
-  singleTaskEdit._onSubmit = () => {
-    singleTask.render(generateDefaultTask);
-    taskContainer.replaceChild(singleTask._element, singleTaskEdit._element);
-    singleTaskEdit.unrender();
-  };
-
-  taskContainer.appendChild(renderedTask);
-});
 
 // insertCardsBlock(taskContainer, TASKS_COUNT);
 
