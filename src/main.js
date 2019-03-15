@@ -36,29 +36,33 @@ const createTasks = (cardsAmount) => {
     });
 };
 
-const tasksArr = createTasks(TASKS_COUNT);
 
-tasksArr.forEach((el) => {
+const getReadyTasks = (tasksAmount) => {
 
-  const singleTask = el.task;
-  const singleTaskEdit = el.taskEdit;
+  createTasks(tasksAmount).forEach((el) => {
 
-  const renderedTask = singleTask.render(generateDefaultTask);
+    const singleTask = el.task;
+    const singleTaskEdit = el.taskEdit;
 
-  singleTask.onEdit = () => {
-    singleTaskEdit.render(generateEditTask);
-    taskContainer.replaceChild(singleTaskEdit.element, singleTask.element);
-    singleTask.unrender();
-  };
+    const renderedTask = singleTask.render(generateDefaultTask);
 
-  singleTaskEdit.onSubmit = () => {
-    singleTask.render(generateDefaultTask);
-    taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
-    singleTaskEdit.unrender();
-  };
+    singleTask.onEdit = () => {
+      singleTaskEdit.render(generateEditTask);
+      taskContainer.replaceChild(singleTaskEdit.element, singleTask.element);
+      singleTask.unrender();
+    };
 
-  taskContainer.appendChild(renderedTask);
-});
+    singleTaskEdit.onSubmit = () => {
+      singleTask.render(generateDefaultTask);
+      taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
+      singleTaskEdit.unrender();
+    };
+
+    taskContainer.appendChild(renderedTask);
+  });
+};
+
+getReadyTasks(TASKS_COUNT);
 
 /**
  * Функция - обработчик события клика на фильтр;
@@ -71,13 +75,13 @@ const filterClickHandler = (evt) => {
     let clickedFilterAmount = clickedFilter.querySelector(`span`);
     const randomNewTasksNumber = getRandomNumber();
     clickedFilterAmount.textContent = randomNewTasksNumber;
+    taskContainer.innerHTML = ``;
+    getReadyTasks(getRandomNumber());
   }
 };
 
 // вставляем карточки с тасками и фильтры на страницу
 insertFiltersBlock(filterSection);
-
-// insertCardsBlock(taskContainer, TASKS_COUNT);
 
 // добавляем обработчик события click для отрисованных фильтров
 filterSection.addEventListener(`click`, filterClickHandler);
