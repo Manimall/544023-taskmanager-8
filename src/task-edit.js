@@ -69,14 +69,6 @@ export class TaskEdit {
     }
   }
 
-  set id(id) {
-    this._id = id;
-  }
-
-  get id() {
-    return this._id;
-  }
-
   get element() {
     return this._element;
   }

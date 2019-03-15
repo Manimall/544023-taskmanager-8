@@ -48,18 +48,12 @@ export const isRepeating = (days) => {
   return Object.values(days).some((day) => day === true);
 };
 
-export const getTaskUniqID = (id) => {
-  id = 0;
-  return id++;
-};
-
 /**
  * Создаем карточки сопределенными по ТЗ данными
- * @param {Object} card - обьект карточки
  * @param {Number} id - id (index) карточки
- * @return {Object} - Card - одну карточку
+ * @return {Object} - Card - возвращаем одну карточку (обьект с ключами и значениями)
  */
-export const createCard = (card, id) => {
+export const createCard = (id) => {
   const repeatingDays = { // дни недели, в которые задача повторяется или не повторяется
     'mo': returnTrueOrFalse(),
     'tu': returnTrueOrFalse(),
@@ -70,7 +64,7 @@ export const createCard = (card, id) => {
     'su': returnTrueOrFalse(),
   };
 
-  card = {
+  const card = {
     title: titles[Math.floor(Math.random() * titles.length)], // Случайная строка из трех на выбор
     dueDate: generateMockDate(), // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
     tags: [...tags].splice(getRandomNumber(undefined, tags.size), getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
@@ -82,7 +76,7 @@ export const createCard = (card, id) => {
     isFavorite: returnTrueOrFalse(), // Булево значение сообщающее, добавлена ли задача в избранное.
     isDone: returnTrueOrFalse(), // Булево значение сообщающее, выполнена ли задача
     isRepeating: isRepeating(repeatingDays), // повторяемая ли карточка
-    id: getTaskUniqID(id),
+    id,
     isEdit: returnTrueOrFalse() // id карточки
   };
 

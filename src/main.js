@@ -1,6 +1,6 @@
 import {getRandomNumber} from './helpers.js';
 import {filters} from './filters-data.js';
-import {createCard, getTaskUniqID} from './tasks-data.js';
+import {createCard} from './tasks-data.js';
 import {renderSingleFilter} from './generate-filter.js';
 import {Task} from './task.js';
 import {TaskEdit} from './task-edit.js';
@@ -24,7 +24,7 @@ const createTasks = (cardsAmount) => {
   return new Array(parseInt(cardsAmount, 10))
     .fill()
     .map((el, id) => {
-      const data = createCard(el, getTaskUniqID(id));
+      const data = createCard(id);
 
       const task = new Task(data);
       const taskEdit = new TaskEdit(data);
@@ -40,7 +40,6 @@ const createTasks = (cardsAmount) => {
 const getReadyTasks = (tasksAmount) => {
 
   createTasks(tasksAmount).forEach((el) => {
-
     const singleTask = el.task;
     const singleTaskEdit = el.taskEdit;
 
@@ -62,7 +61,9 @@ const getReadyTasks = (tasksAmount) => {
   });
 };
 
+
 getReadyTasks(TASKS_COUNT);
+
 
 /**
  * Функция - обработчик события клика на фильтр;

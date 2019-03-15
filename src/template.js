@@ -3,7 +3,7 @@ import {generateRepeatingDays} from './generate-repeating-days.js';
 import {isRepeating} from './tasks-data.js';
 
 
-const generateDefaultTask = ({title, color, repeatingDays, id, tags}) => {
+const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
   return (
     `<article class="card
                ${color}
@@ -47,7 +47,7 @@ const generateDefaultTask = ({title, color, repeatingDays, id, tags}) => {
  * @param {Object} card - Объект с данными одной карточки
  * @return {String} - разметку (строку с заполненными данными)
  */
-const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, id, isEdit}) => {
+const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit, id}) => {
   return (
     `<article class="card
                     ${isEdit ? `card--edit` : ``}

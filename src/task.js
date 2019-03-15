@@ -63,10 +63,6 @@ export class Task {
     this._element = null;
   }
 
-  get id() {
-    return this._id;
-  }
-
   get element() {
     return this._element;
   }
