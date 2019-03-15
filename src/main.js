@@ -77,7 +77,7 @@ const filterClickHandler = (evt) => {
     const randomNewTasksNumber = getRandomNumber();
     clickedFilterAmount.textContent = randomNewTasksNumber;
     taskContainer.innerHTML = ``;
-    getReadyTasks(getRandomNumber());
+    getReadyTasks(randomNewTasksNumber);
   }
 };
 
