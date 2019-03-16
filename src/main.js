@@ -1,14 +1,15 @@
-// Импорт относительно текущего модуля
 import {getRandomNumber} from './helpers.js';
 import {filters} from './filters-data.js';
 import {createCard} from './tasks-data.js';
 import {renderSingleFilter} from './generate-filter.js';
-import {generateSingleCard} from './generate-task.js';
+import {Task} from './task.js';
+import {TaskEdit} from './task-edit.js';
+import {generateEditTask, generateDefaultTask} from './template.js';
+
+const TASKS_COUNT = 7; // изначальное кол-во карточек по ТЗ
 
 const filterSection = document.querySelector(`.main__filter`); // секция, куда нужно вставить сгенерированные фильтры
-const cardsSection = document.querySelector(`.board__tasks`); // секция для вставки сгенерированных карточек
-
-const START_CARDS_COUNT = 7; // изначальное кол-во карточек по ТЗ
+const taskContainer = document.querySelector(`.board__tasks`); // секция для вставки сгенерированных карточек
 
 /**
  * Вставляем разметку фильтров в нужный блок на страницу
@@ -19,19 +20,50 @@ const insertFiltersBlock = (filterBlock) => {
   filterBlock.insertAdjacentHTML(`afterbegin`, renderedFilter);
 };
 
-/**
- * Вставляем отрисованные карточки в разметку в нужный блок на странице
- * @param {HTMLElement} cardsBlock - элемент, в который мы поместим все карточки
- * @param {number} cardsAmount - кол-во карточек, которые надо отрисовать
- */
-const insertCardsBlock = (cardsBlock, cardsAmount) => {
-  const renderedCards = new Array(parseInt(cardsAmount, 10)) // создаем пустой массив из необходимого кол-ва объектов
-    .fill() // заполняем этот массив 7 undefined
-    .map(() => generateSingleCard(createCard())) // изменяем массив, выполнив функцию generateSingleCard на каждом элементе массива
-    .join(``); // превращаем массив в строку
+const createTasks = (cardsAmount) => {
+  return new Array(parseInt(cardsAmount, 10))
+    .fill()
+    .map((el, id) => {
+      const data = createCard(id);
 
-  cardsBlock.innerHTML = renderedCards;
+      const task = new Task(data);
+      const taskEdit = new TaskEdit(data);
+
+      return {
+        task,
+        taskEdit,
+      };
+    });
 };
+
+
+const getReadyTasks = (tasksAmount) => {
+
+  createTasks(tasksAmount).forEach((el) => {
+    const singleTask = el.task;
+    const singleTaskEdit = el.taskEdit;
+
+    const renderedTask = singleTask.render(generateDefaultTask);
+
+    singleTask.onEdit = () => {
+      singleTaskEdit.render(generateEditTask);
+      taskContainer.replaceChild(singleTaskEdit.element, singleTask.element);
+      singleTask.unrender();
+    };
+
+    singleTaskEdit.onSubmit = () => {
+      singleTask.render(generateDefaultTask);
+      taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
+      singleTaskEdit.unrender();
+    };
+
+    taskContainer.appendChild(renderedTask);
+  });
+};
+
+
+getReadyTasks(TASKS_COUNT);
+
 
 /**
  * Функция - обработчик события клика на фильтр;
@@ -44,13 +76,13 @@ const filterClickHandler = (evt) => {
     let clickedFilterAmount = clickedFilter.querySelector(`span`);
     const randomNewTasksNumber = getRandomNumber();
     clickedFilterAmount.textContent = randomNewTasksNumber;
-    insertCardsBlock(cardsSection, clickedFilterAmount.textContent);
+    taskContainer.innerHTML = ``;
+    getReadyTasks(randomNewTasksNumber);
   }
 };
 
 // вставляем карточки с тасками и фильтры на страницу
 insertFiltersBlock(filterSection);
-insertCardsBlock(cardsSection, START_CARDS_COUNT);
 
 // добавляем обработчик события click для отрисованных фильтров
 filterSection.addEventListener(`click`, filterClickHandler);

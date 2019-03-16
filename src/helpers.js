@@ -14,4 +14,5 @@ const getRandomNumber = (min = 0, max = 10) => {
  */
 const returnTrueOrFalse = () => Math.random() > 0.5;
 
+
 export {getRandomNumber, returnTrueOrFalse};

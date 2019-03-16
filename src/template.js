@@ -2,20 +2,60 @@ import {generateTags} from './generate-hashtag.js';
 import {generateRepeatingDays} from './generate-repeating-days.js';
 import {isRepeating} from './tasks-data.js';
 
+
+const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
+  return (
+    `<article class="card
+               ${color}
+               ${isRepeating(repeatingDays) ? `card--repeat` : ``}"
+               id="${id}"
+      >
+      <div class="card__inner">
+        <div class="card__control">
+          <button type="button" class="card__btn card__btn--edit">edit</button>
+          <button type="button" class="card__btn card__btn--archive">archive</button>
+          <button type="button" class="card__btn card__btn--favorites card__btn--disabled">favorites</button>
+        </div>
+
+        <div class="card__color-bar">
+          <svg class="card__color-bar-wave" width="100%" height="10">
+            <use xlink:href="#wave"></use>
+          </svg>
+        </div>
+
+        <div class="card__textarea-wrap">
+          <label>
+            <textarea class="card__text" placeholder="Start typing your text here..." name="text">${title}</textarea>
+          </label>
+        </div>
+
+        <div class="card__settings">
+          <div class="card__details">
+            <div class="card__hashtag">
+              <div class="card__hashtag-list">
+                ${generateTags(tags)}
+              </div>
+            </div>
+          </div>
+        </div>
+     </article>`
+  );
+};
+
 /**
  * Отрисовываем шаблон карточки (разметку отдельной карточки)
  * @param {Object} card - Объект с данными одной карточки
  * @return {String} - разметку (строку с заполненными данными)
  */
-export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, id, isEdit}) => {
-  return `
-  <article class="card
-          ${isEdit ? `card--edit` : ``}
-          ${isRepeating(repeatingDays) ? `card--repeat` : ``}
-          ${color}"
-          id="${id}"
-  >
-    <form class="card__form" method="get">
+const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit, id}) => {
+  return (
+    `<article class="card
+                    ${isEdit ? `card--edit` : ``}
+                    ${isRepeating(repeatingDays) ? `card--repeat` : ``}
+                    ${color}"
+                    id="${id}"
+      >
+      <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
           <button type="button" class="card__btn card__btn--edit">
@@ -117,6 +157,10 @@ export const generateSingleCard = ({color, title, hasDeadline, dueDate, hasRepea
         </div>
       </div>
     </form>
-  </article>
-  `;
+  </article>`
+  );
 };
+
+export {generateEditTask, generateDefaultTask};
+
+
