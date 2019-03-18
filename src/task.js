@@ -1,6 +1,5 @@
 
 import {Component} from './component.js';
-import {createElement} from './helpers.js';
 
 export class Task extends Component {
 
@@ -35,8 +34,8 @@ export class Task extends Component {
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
-  render(getTemplate) {
-    const templateArgs = {
+  get templateArgs() {
+    return {
       title: this._title,
       id: this._id,
 
@@ -55,10 +54,6 @@ export class Task extends Component {
       isFavorite: this._isFavorite,
       isDone: this._isDone,
     };
-
-    this._element = createElement(getTemplate, templateArgs);
-    this.bind();
-    return this._element;
   }
 
   set onEdit(fn) {

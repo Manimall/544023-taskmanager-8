@@ -1,5 +1,4 @@
 import {Component} from './component.js';
-import {createElement} from './helpers.js';
 
 export class TaskEdit extends Component {
   constructor(obj) {
@@ -30,8 +29,8 @@ export class TaskEdit extends Component {
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
   }
 
-  render(getTemplate) {
-    const templateArgs = {
+  get templateArgs() {
+    return {
       title: this._title,
       id: this._id,
 
@@ -52,10 +51,6 @@ export class TaskEdit extends Component {
 
       isEdit: this._state.isEdit,
     };
-
-    this._element = createElement(getTemplate, templateArgs);
-    this.bind();
-    return this._element;
   }
 
   _onSubmitButtonClick(evt) {

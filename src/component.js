@@ -20,9 +20,12 @@ export class Component {
 
   unbind() {}
 
+  get templateArgs() {
+    return {};
+  }
+
   render(getTemplate) {
-    const templateArgs = {};
-    this._element = createElement(getTemplate, templateArgs);
+    this._element = createElement(getTemplate, this.templateArgs);
     this.bind();
     return this._element;
   }

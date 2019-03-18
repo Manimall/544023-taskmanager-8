@@ -17,7 +17,7 @@ const returnTrueOrFalse = () => Math.random() > 0.5;
 
 const createElement = (getTemplate, templateArgs) => {
   const newElement = document.createElement(`div`);
-  newElement.innerHtml = getTemplate(templateArgs);
+  newElement.innerHTML = getTemplate(templateArgs);
   return newElement.firstChild;
 };
 
