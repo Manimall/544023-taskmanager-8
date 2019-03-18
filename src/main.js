@@ -5,7 +5,7 @@ import {renderSingleFilter} from './generate-filter.js';
 import {Task} from './task.js';
 import {TaskEdit} from './task-edit.js';
 import {generateEditTask, generateDefaultTask} from './template.js';
-import {getId} from './get-task-id.js';
+
 
 const TASKS_COUNT = 7; // изначальное кол-во карточек по ТЗ
 
@@ -24,8 +24,8 @@ const insertFiltersBlock = (filterBlock) => {
 const createTasks = (cardsAmount) => {
   return new Array(parseInt(cardsAmount, 10))
     .fill()
-    .map(() => {
-      const data = createCard();
+    .map((el, id) => {
+      const data = createCard(id);
 
       const task = new Task(data);
       const taskEdit = new TaskEdit(data);
@@ -78,7 +78,6 @@ const filterClickHandler = (evt) => {
     const randomNewTasksNumber = getRandomNumber();
     clickedFilterAmount.textContent = randomNewTasksNumber;
     taskContainer.innerHTML = ``;
-    getId.reset(); // начинаем счет id с 0
     getReadyTasks(randomNewTasksNumber);
   }
 };
