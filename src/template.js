@@ -1,14 +1,14 @@
 import {generateTags} from './generate-hashtag.js';
 import {generateRepeatingDays} from './generate-repeating-days.js';
 import {isRepeating} from './tasks-data.js';
+import {getId} from './get-task-id.js';
 
-
-const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
+const generateDefaultTask = ({title, color, repeatingDays, tags}) => {
   return (
     `<article class="card
                ${color}
                ${isRepeating(repeatingDays) ? `card--repeat` : ``}"
-               id="${id}"
+               id="${getId.increase()}"
       >
       <div class="card__inner">
         <div class="card__control">
@@ -47,13 +47,13 @@ const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
  * @param {Object} card - Объект с данными одной карточки
  * @return {String} - разметку (строку с заполненными данными)
  */
-const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit, id}) => {
+const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit}) => {
   return (
     `<article class="card
                     ${isEdit ? `card--edit` : ``}
                     ${isRepeating(repeatingDays) ? `card--repeat` : ``}
                     ${color}"
-                    id="${id}"
+                    id="${getId.increase()}"
       >
       <form class="card__form" method="get">
       <div class="card__inner">

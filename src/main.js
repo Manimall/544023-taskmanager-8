@@ -23,8 +23,8 @@ const insertFiltersBlock = (filterBlock) => {
 const createTasks = (cardsAmount) => {
   return new Array(parseInt(cardsAmount, 10))
     .fill()
-    .map((el, id) => {
-      const data = createCard(id);
+    .map(() => {
+      const data = createCard();
 
       const task = new Task(data);
       const taskEdit = new TaskEdit(data);
