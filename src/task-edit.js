@@ -1,5 +1,9 @@
-export class TaskEdit {
+import {Component} from './component.js';
+import {createElement} from './helpers.js';
+
+export class TaskEdit extends Component {
   constructor(obj) {
+    super();
     this._title = obj.title;
     this._dueDate = obj.dueDate;
 
@@ -27,8 +31,6 @@ export class TaskEdit {
   }
 
   render(getTemplate) {
-    const newElement = document.createElement(`div`);
-
     const templateArgs = {
       title: this._title,
       id: this._id,
@@ -51,15 +53,9 @@ export class TaskEdit {
       isEdit: this._state.isEdit,
     };
 
-    newElement.innerHTML = getTemplate(templateArgs);
-    this._element = newElement.firstChild;
+    this._element = createElement(getTemplate, templateArgs);
     this.bind();
     return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
   }
 
   _onSubmitButtonClick(evt) {
@@ -67,10 +63,6 @@ export class TaskEdit {
     if (typeof this._onSubmit === `function`) {
       this._onSubmit();
     }
-  }
-
-  get element() {
-    return this._element;
   }
 
   set onSubmit(fn) {

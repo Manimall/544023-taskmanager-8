@@ -1,7 +1,12 @@
 
-export class Task {
+import {Component} from './component.js';
+import {createElement} from './helpers.js';
+
+export class Task extends Component {
 
   constructor(obj) {
+    super();
+
     this._title = obj.title;
     this._id = obj.id;
     this._dueDate = obj.dueDate;
@@ -31,7 +36,6 @@ export class Task {
   }
 
   render(getTemplate) {
-    const newElement = document.createElement(`div`);
     const templateArgs = {
       title: this._title,
       id: this._id,
@@ -52,18 +56,8 @@ export class Task {
       isDone: this._isDone,
     };
 
-    newElement.innerHTML = getTemplate(templateArgs);
-    this._element = newElement.firstChild;
+    this._element = createElement(getTemplate, templateArgs);
     this.bind();
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
-  }
-
-  get element() {
     return this._element;
   }
 
