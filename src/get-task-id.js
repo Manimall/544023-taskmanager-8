@@ -3,4 +3,8 @@ export const getId = {
   increase() {
     return this.id++;
   },
+  reset() {
+    this.id = 0;
+    return this.id;
+  }
 };

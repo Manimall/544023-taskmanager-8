@@ -5,6 +5,7 @@ import {renderSingleFilter} from './generate-filter.js';
 import {Task} from './task.js';
 import {TaskEdit} from './task-edit.js';
 import {generateEditTask, generateDefaultTask} from './template.js';
+import {getId} from './get-task-id.js';
 
 const TASKS_COUNT = 7; // изначальное кол-во карточек по ТЗ
 
@@ -77,6 +78,7 @@ const filterClickHandler = (evt) => {
     const randomNewTasksNumber = getRandomNumber();
     clickedFilterAmount.textContent = randomNewTasksNumber;
     taskContainer.innerHTML = ``;
+    getId.reset(); // начинаем счет id с 0
     getReadyTasks(randomNewTasksNumber);
   }
 };
