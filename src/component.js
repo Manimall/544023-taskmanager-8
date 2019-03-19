@@ -3,7 +3,7 @@ import {createElement} from './helpers.js';
 export class Component {
   constructor() {
     if (new.target === Component) {
-      throw new Error(`Нельзя ссоздать экземпляр данного класса напрямую,
+      throw new Error(`Нельзя создать экземпляр данного класса напрямую,
       разрешено создавать лишь наследников данного класса`);
     }
 
