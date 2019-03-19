@@ -2,7 +2,6 @@ import {generateTags} from './generate-hashtag.js';
 import {generateRepeatingDays} from './generate-repeating-days.js';
 import {isRepeating} from './tasks-data.js';
 
-
 const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
   return (
     `<article class="card
@@ -50,10 +49,10 @@ const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
 const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit, id}) => {
   return (
     `<article class="card
-                    ${isEdit ? `card--edit` : ``}
-                    ${isRepeating(repeatingDays) ? `card--repeat` : ``}
-                    ${color}"
-                    id="${id}"
+                ${isEdit ? `card--edit` : ``}
+                ${isRepeating(repeatingDays) ? `card--repeat` : ``}
+                ${color}"
+                id="${id}"
       >
       <form class="card__form" method="get">
       <div class="card__inner">

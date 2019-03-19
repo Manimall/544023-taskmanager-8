@@ -6,6 +6,7 @@ import {Task} from './task.js';
 import {TaskEdit} from './task-edit.js';
 import {generateEditTask, generateDefaultTask} from './template.js';
 
+
 const TASKS_COUNT = 7; // изначальное кол-во карточек по ТЗ
 
 const filterSection = document.querySelector(`.main__filter`); // секция, куда нужно вставить сгенерированные фильтры

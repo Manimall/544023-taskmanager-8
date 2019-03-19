@@ -1,7 +1,11 @@
 
-export class Task {
+import {Component} from './component.js';
+
+export class Task extends Component {
 
   constructor(obj) {
+    super();
+
     this._title = obj.title;
     this._id = obj.id;
     this._dueDate = obj.dueDate;
@@ -30,9 +34,8 @@ export class Task {
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
-  render(getTemplate) {
-    const newElement = document.createElement(`div`);
-    const templateArgs = {
+  get templateArgs() {
+    return {
       title: this._title,
       id: this._id,
 
@@ -51,20 +54,6 @@ export class Task {
       isFavorite: this._isFavorite,
       isDone: this._isDone,
     };
-
-    newElement.innerHTML = getTemplate(templateArgs);
-    this._element = newElement.firstChild;
-    this.bind();
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
-  }
-
-  get element() {
-    return this._element;
   }
 
   set onEdit(fn) {

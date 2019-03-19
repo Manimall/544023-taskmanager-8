@@ -15,4 +15,11 @@ const getRandomNumber = (min = 0, max = 10) => {
 const returnTrueOrFalse = () => Math.random() > 0.5;
 
 
-export {getRandomNumber, returnTrueOrFalse};
+const createElement = (getTemplate, templateArgs) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = getTemplate(templateArgs);
+  return newElement.firstChild;
+};
+
+
+export {getRandomNumber, returnTrueOrFalse, createElement};
