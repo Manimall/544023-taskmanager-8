@@ -9,7 +9,6 @@ export class TaskEdit extends Component {
     this._tags = obj.tags;
     this._picture = obj.picture;
 
-    this._colors = obj.colors;
     this._colorValue = obj.colorValue;
     this._colorKey = obj.colorKey;
 
@@ -45,7 +44,6 @@ export class TaskEdit extends Component {
       tags: this._tags,
       picture: this._picture,
 
-      colors: this._colors,
       colorValue: this._colorValue,
       colorKey: this._colorKey,
 

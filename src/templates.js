@@ -49,7 +49,7 @@ const generateDefaultTask = ({title, colorValue, repeatingDays, tags, id}) => {
  * @param {Object} card - Объект с данными одной карточки
  * @return {String} - разметку (строку с заполненными данными)
  */
-const generateEditTask = ({colors, colorValue, colorKey, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit, id}) => {
+const generateEditTask = ({colorValue, colorKey, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit, id}) => {
   return (
     `<article class="card
                 ${isEdit ? `card--edit` : ``}
@@ -72,7 +72,7 @@ const generateEditTask = ({colors, colorValue, colorKey, title, hasDeadline, due
         </div>
 
         <div class="card__color-bar">
-          <svg width="100%" height="10">
+          <svg class="card__color-bar-wave" width="100%" height="10">
             <use xlink:href="#wave"></use>
           </svg>
         </div>
@@ -138,7 +138,7 @@ const generateEditTask = ({colors, colorValue, colorKey, title, hasDeadline, due
 
           <div class="card__colors-inner">
             <h3 class="card__colors-title">Color</h3>
-              ${returnColorsTemplate(colors, colorKey)}
+              ${returnColorsTemplate(colorKey)}
           </div>
         </div>
 

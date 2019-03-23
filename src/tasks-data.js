@@ -14,7 +14,7 @@ const titles = [
 ];
 
 // цвета для тасков
-const colors = {
+const Colors = {
   blue: `card--blue`,
   black: `card--black`,
   yellow: `card--yellow`,
@@ -44,12 +44,13 @@ const generateMockDate = () => {
   return new Date(getRandomNumber(dateNow.getTime() - MS_IN_WEEK, dateNow.getTime() + MS_IN_WEEK));
 };
 
-export const isRepeating = (days) => {
+const isRepeating = (days) => {
   return Object.values(days).some((day) => day === true);
 };
 
+
 const getColor = () => {
-  const [colorKey, colorValue] = Object.entries(colors)[Math.floor(Math.random() * Object.keys(colors).length)];
+  const [colorKey, colorValue] = Object.entries(Colors)[Math.floor(Math.random() * Object.keys(Colors).length)];
   return {
     colorKey,
     colorValue
@@ -61,7 +62,7 @@ const getColor = () => {
  * @param {Number} id - id (index) карточки
  * @return {Object} - Card - возвращаем одну карточку (обьект с ключами и значениями)
  */
-export const createCard = (id) => {
+const createCard = (id) => {
   const repeatingDays = { // дни недели, в которые задача повторяется или не повторяется
     'mo': returnTrueOrFalse(),
     'tu': returnTrueOrFalse(),
@@ -72,14 +73,15 @@ export const createCard = (id) => {
     'su': returnTrueOrFalse(),
   };
 
+  const rightColor = getColor();
+
   return {
     title: titles[Math.floor(Math.random() * titles.length)], // Случайная строка из трех на выбор
     dueDate: generateMockDate(), // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
     tags: [...tags].splice(getRandomNumber(undefined, tags.size), getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
     picture: `http://picsum.photos/100/100?r=${Math.random()})`, // URL до рандомной картинки
-    colors,
-    colorValue: getColor(colors).colorValue,
-    colorKey: getColor(colors).colorKey,
+    colorValue: rightColor.colorValue,
+    colorKey: rightColor.colorKey,
     repeatingDays,
     hasDeadline: returnTrueOrFalse(), // есть ли дедлайн у карточки
     hasRepeat: returnTrueOrFalse(), // повторяется ли данная карточка
@@ -91,3 +93,4 @@ export const createCard = (id) => {
   };
 };
 
+export {Colors, isRepeating, createCard};

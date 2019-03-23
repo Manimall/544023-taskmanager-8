@@ -4,7 +4,7 @@ import {createCard} from './tasks-data.js';
 import {renderSingleFilter} from './generate-filter.js';
 import {Task} from './task.js';
 import {TaskEdit} from './task-edit.js';
-import {generateEditTask, generateDefaultTask} from './template.js';
+import {generateEditTask, generateDefaultTask} from './templates.js';
 
 
 const TASKS_COUNT = 7; // изначальное кол-во карточек по ТЗ
