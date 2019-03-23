@@ -49,14 +49,6 @@ const isRepeating = (days) => {
 };
 
 
-const getColor = () => {
-  const [colorKey, colorValue] = Object.entries(Colors)[Math.floor(Math.random() * Object.keys(Colors).length)];
-  return {
-    colorKey,
-    colorValue
-  };
-};
-
 /**
  * Создаем карточки сопределенными по ТЗ данными
  * @param {Number} id - id (index) карточки
@@ -73,15 +65,12 @@ const createCard = (id) => {
     'su': returnTrueOrFalse(),
   };
 
-  const rightColor = getColor();
-
   return {
     title: titles[Math.floor(Math.random() * titles.length)], // Случайная строка из трех на выбор
     dueDate: generateMockDate(), // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
     tags: [...tags].splice(getRandomNumber(undefined, tags.size), getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
     picture: `http://picsum.photos/100/100?r=${Math.random()})`, // URL до рандомной картинки
-    colorValue: rightColor.colorValue,
-    colorKey: rightColor.colorKey,
+    color: Object.keys(Colors)[Math.floor(Math.random() * Object.keys(Colors).length)],
     repeatingDays,
     hasDeadline: returnTrueOrFalse(), // есть ли дедлайн у карточки
     hasRepeat: returnTrueOrFalse(), // повторяется ли данная карточка

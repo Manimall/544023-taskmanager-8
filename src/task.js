@@ -14,7 +14,7 @@ export class Task extends Component {
     this._tags = obj.tags;
     this._picture = obj.picture;
 
-    this._colorValue = obj.colorValue;
+    this._color = obj.color;
 
     this._id = obj.id;
     this._repeatingDays = obj.repeatingDays;
@@ -48,7 +48,7 @@ export class Task extends Component {
       tags: this._tags,
       picture: this._picture,
 
-      colorValue: this._colorValue,
+      color: this._color,
 
       hasDeadline: this._hasDeadline,
       hasRepeat: this._hasRepeat,
