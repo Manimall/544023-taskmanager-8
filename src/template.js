@@ -2,10 +2,13 @@ import {generateTags} from './generate-hashtag.js';
 import {generateRepeatingDays} from './generate-repeating-days.js';
 import {isRepeating} from './tasks-data.js';
 
-const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
+import {returnColorsTemplate} from './generate-tasks-colors.js';
+
+
+const generateDefaultTask = ({title, colorValue, repeatingDays, tags, id}) => {
   return (
     `<article class="card
-               ${color}
+               ${colorValue}
                ${isRepeating(repeatingDays) ? `card--repeat` : ``}"
                id="${id}"
       >
@@ -46,12 +49,12 @@ const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
  * @param {Object} card - Объект с данными одной карточки
  * @return {String} - разметку (строку с заполненными данными)
  */
-const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit, id}) => {
+const generateEditTask = ({colors, colorValue, colorKey, title, hasDeadline, dueDate, hasRepeat, tags, repeatingDays, picture, isEdit, id}) => {
   return (
     `<article class="card
                 ${isEdit ? `card--edit` : ``}
                 ${isRepeating(repeatingDays) ? `card--repeat` : ``}
-                ${color}"
+                ${colorValue}"
                 id="${id}"
       >
       <form class="card__form" method="get">
@@ -135,18 +138,7 @@ const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, 
 
           <div class="card__colors-inner">
             <h3 class="card__colors-title">Color</h3>
-            <div class="card__colors-wrap">
-              <input type="radio" id="color-black-1" class="card__color-input card__color-input--black visually-hidden" name="color" value="black" checked="">
-              <label for="color-black-1" class="card__color card__color--black">black</label>
-              <input type="radio" id="color-yellow-1" class="card__color-input card__color-input--yellow visually-hidden" name="color" value="yellow">
-              <label for="color-yellow-1" class="card__color card__color--yellow">yellow</label>
-              <input type="radio" id="color-blue-1" class="card__color-input card__color-input--blue visually-hidden" name="color" value="blue">
-              <label for="color-blue-1" class="card__color card__color--blue">blue</label>
-              <input type="radio" id="color-green-1" class="card__color-input card__color-input--green visually-hidden" name="color" value="green">
-              <label for="color-green-1" class="card__color card__color--green">green</label>
-              <input type="radio" id="color-pink-1" class="card__color-input card__color-input--pink visually-hidden" name="color" value="pink">
-              <label for="color-pink-1" class="card__color card__color--pink">pink</label>
-            </div>
+              ${returnColorsTemplate(colors, colorKey)}
           </div>
         </div>
 
