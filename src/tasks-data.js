@@ -57,7 +57,7 @@ const generateRepeatingDays = (days) => [...days].reduce((acc, day) => {
  */
 const generateMockDate = () => {
   const dateNow = new Date();
-  return new Date(getRandomNumber(dateNow.getTime() - MS_IN_WEEK, dateNow.getTime() + MS_IN_WEEK));
+  return new Date(getRandomNumber(dateNow.getTime(), dateNow.getTime() + MS_IN_WEEK));
 };
 
 const isRepeating = (days) => {

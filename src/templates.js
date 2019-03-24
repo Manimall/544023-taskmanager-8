@@ -13,8 +13,10 @@ const generateDefaultTask = ({title, color, picture, dueDate, hasDeadline, repea
   return (
     `<article class="card
                ${Colors[color]}
-               ${isRepeating(repeatingDays) ? `card--repeat` : ``}"
+               ${isRepeating(repeatingDays) ? `card--repeat` : ``}
+               ${hasDeadline ? `card--deadline` : ``}"
                id="${id}"
+
       >
       <div class="card__inner">
         <div class="card__control">
@@ -41,22 +43,22 @@ const generateDefaultTask = ({title, color, picture, dueDate, hasDeadline, repea
 
             <div class="card__dates">
 
-              <fieldset class="card__date-deadline" ${hasDeadline ? `disabled` : `` }>
+              <fieldset class="card__date-deadline" ${!hasDeadline ? `disabled` : `` }>
                 <label class="card__input-deadline-wrap">
                   <input class="card__date"
                           type="text"
-                          placeholder="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
+                          placeholder="${dueDate ? moment(dueDate).format(`D MMMM`) : ``}"
                           name="date"
-                          value="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
+                          value="${dueDate ? moment(dueDate).format(`D MMMM`) : ``}"
                   >
                 </label>
 
                 <label class="card__input-deadline-wrap">
                   <input class="card__time"
                          type="text"
-                         placeholder="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
+                         placeholder="${dueDate ? moment(dueDate).format(`hh:mm A`) : ``}"
                          name="time"
-                         value="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
+                         value="${dueDate ? moment(dueDate).format(`hh:mm A`) : ``}"
                   >
                 </label>
               </fieldset>
@@ -90,7 +92,8 @@ const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, 
     `<article class="card
                 ${isEdit ? `card--edit` : ``}
                 ${isRepeating(repeatingDays) ? `card--repeat` : ``}
-                ${Colors[color]}"
+                ${Colors[color]}
+                ${hasDeadline ? `card--deadline` : ``}"
                 id="${id}"
       >
       <form class="card__form" method="get">
@@ -126,21 +129,21 @@ const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, 
                 date: <span class="card__date-status">${hasDeadline ? `yes` : `no`}</span>
               </button>
 
-              <fieldset class="card__date-deadline" disabled="">
+              <fieldset class="card__date-deadline" ${!hasDeadline ? `disabled` : `` }>
                 <label class="card__input-deadline-wrap">
                   <input class="card__date"
                          type="text"
                          name="date"
-                         value="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
-                         placeholder="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
+                         value="${dueDate ? moment(dueDate).format(`D MMMM`) : ``}"
+                         placeholder="${dueDate ? moment(dueDate).format(`D MMMM`) : ``}"
                   >
                 </label>
                 <label class="card__input-deadline-wrap">
                   <input class="card__time"
                          type="text"
                          name="time"
-                         value="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
-                         placeholder="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
+                         value="${dueDate ? moment(dueDate).format(`hh:mm A`) : ``}"
+                         placeholder="${dueDate ? moment(dueDate).format(`hh:mm A`) : ``}"
                   >
                 </label>
               </fieldset>
@@ -149,7 +152,7 @@ const generateEditTask = ({color, title, hasDeadline, dueDate, hasRepeat, tags, 
                 repeat:<span class="card__repeat-status">${hasRepeat ? `yes` : `no`}</span>
               </button>
 
-              <fieldset class="card__repeat-days" disabled="">
+              <fieldset class="card__repeat-days" ${!hasRepeat && `disabled`}>
                 <div class="card__repeat-days-inner">
                   ${generateRepeatingDays(repeatingDays)}
                 </div>

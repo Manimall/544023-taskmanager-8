@@ -14,9 +14,6 @@ export class TaskEdit extends Component {
     this._id = obj.id;
     this._repeatingDays = obj.repeatingDays;
 
-    this._hasDeadline = obj.hasDeadline;
-    this._hasRepeat = obj.hasRepeat;
-
     this._isFavorite = obj.isFavorite;
     this._isDone = obj.isDone;
 
@@ -24,6 +21,8 @@ export class TaskEdit extends Component {
 
     this._state = {
       isEdit: true,
+      hasDeadline: false,
+      hasRepeat: false,
     };
 
     this._onSubmit = null;
@@ -45,8 +44,8 @@ export class TaskEdit extends Component {
 
       color: this._color,
 
-      hasDeadline: this._hasDeadline,
-      hasRepeat: this._hasRepeat,
+      hasDeadline: this._state.hasDeadline,
+      hasRepeat: this._state.hasRepeat,
 
       isFavorite: this._isFavorite,
       isDone: this._isDone,
@@ -66,13 +65,30 @@ export class TaskEdit extends Component {
     this._onSubmit = fn;
   }
 
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
+  }
+
   bind() {
-    this._element.querySelector(`.card__form`)
-      .addEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
   }
 
   unbind() {
-    this._element.querySelector(`.card__form`)
-      .removeEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onChangeDate);
+  }
+
+  _onChangeDate() {
+    this._state.hasDeadline = !this._state.hasDeadline;
+    this.unrender();
+    this.render();
+  }
+
+  _onChangeRepeated() {
+
   }
 }

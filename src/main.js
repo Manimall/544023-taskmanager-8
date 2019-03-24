@@ -48,12 +48,14 @@ const getReadyTasks = (tasksAmount) => {
     const renderedTask = singleTask.render(generateDefaultTask);
 
     singleTask.onEdit = () => {
+
       singleTaskEdit.render(generateEditTask);
       taskContainer.replaceChild(singleTaskEdit.element, singleTask.element);
       singleTask.unrender();
     };
 
     singleTaskEdit.onSubmit = () => {
+
       singleTask.render(generateDefaultTask);
       taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
       singleTaskEdit.unrender();

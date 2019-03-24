@@ -78,4 +78,11 @@ export class Task extends Component {
       .removeEventListener(`click`, this._onEditButtonClick);
   }
 
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
+  }
+
 }
