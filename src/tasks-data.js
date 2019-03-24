@@ -34,6 +34,22 @@ const tags = new Set([
   `angular`
 ]);
 
+// дни недели, в которые задача повторяется или не повторяется
+const repeatingDays = new Set([
+  `mo`,
+  `tu`,
+  `we`,
+  `th`,
+  `fr`,
+  `sa`,
+  `su`,
+]);
+
+const generateRepeatingDays = (days) => [...days].reduce((acc, day) => {
+  acc[day] = returnTrueOrFalse();
+  return acc;
+}, {});
+
 /**
  * Генерируем дату (кол-во миллисекнд от начала эпохи Unix) в пределех от
  * плюс-минус неделя от текущей даты;
@@ -55,23 +71,13 @@ const isRepeating = (days) => {
  * @return {Object} - Card - возвращаем одну карточку (обьект с ключами и значениями)
  */
 const createCard = (id) => {
-  const repeatingDays = { // дни недели, в которые задача повторяется или не повторяется
-    'mo': returnTrueOrFalse(),
-    'tu': returnTrueOrFalse(),
-    'we': returnTrueOrFalse(),
-    'th': returnTrueOrFalse(),
-    'fr': returnTrueOrFalse(),
-    'sa': returnTrueOrFalse(),
-    'su': returnTrueOrFalse(),
-  };
-
   return {
     title: titles[Math.floor(Math.random() * titles.length)], // Случайная строка из трех на выбор
     dueDate: generateMockDate(), // Дедлайн - дата запланированного выполнения (число в пределах недели от текущего момента)
     tags: [...tags].splice(getRandomNumber(undefined, tags.size), getRandomNumber(MIN_HASHTAGS_NUM, MAX_HASHTAGS_NUM)), //  список хештегов, но без символа # в начале строки (от 0 до 3х тегов) - они не повторяются
     picture: `http://picsum.photos/100/100?r=${Math.random()})`, // URL до рандомной картинки
     color: Object.keys(Colors)[Math.floor(Math.random() * Object.keys(Colors).length)],
-    repeatingDays,
+    repeatingDays: generateRepeatingDays(repeatingDays),
     hasDeadline: returnTrueOrFalse(), // есть ли дедлайн у карточки
     hasRepeat: returnTrueOrFalse(), // повторяется ли данная карточка
     isFavorite: returnTrueOrFalse(), // Булево значение сообщающее, добавлена ли задача в избранное.

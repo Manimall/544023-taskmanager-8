@@ -21,6 +21,7 @@ const insertFiltersBlock = (filterBlock) => {
   filterBlock.insertAdjacentHTML(`afterbegin`, renderedFilter);
 };
 
+
 const createTasks = (cardsAmount) => {
   return new Array(parseInt(cardsAmount, 10))
     .fill()

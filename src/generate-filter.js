@@ -11,7 +11,7 @@ const renderSingleFilter = (filterData) =>
     class="filter__input visually-hidden"
     name="filter"
     ${filterData.isChecked ? `checked` : ``}
-    ${filterData.isDisabled ? `disabled` : ``}
+    ${filterData.amount === 0 ? `disabled` : ``}
   >
   <label for="filter__${filterData.id.toLowerCase()}" class="filter__label">
     ${filterData.id.toLowerCase()}

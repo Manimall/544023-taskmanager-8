@@ -6,8 +6,10 @@ import {Colors} from './tasks-data.js';
 
 import {returnColorsTemplate} from './generate-tasks-colors.js';
 
+import moment from 'moment';
 
-const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
+
+const generateDefaultTask = ({title, color, picture, dueDate, hasDeadline, repeatingDays, tags, id}) => {
   return (
     `<article class="card
                ${Colors[color]}
@@ -33,16 +35,48 @@ const generateDefaultTask = ({title, color, repeatingDays, tags, id}) => {
           </label>
         </div>
 
+
         <div class="card__settings">
           <div class="card__details">
+
+            <div class="card__dates">
+
+              <fieldset class="card__date-deadline" ${hasDeadline ? `disabled` : `` }>
+                <label class="card__input-deadline-wrap">
+                  <input class="card__date"
+                          type="text"
+                          placeholder="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
+                          name="date"
+                          value="${dueDate.toLocaleString(`en-GB`, {day: `numeric`, month: `long`})}"
+                  >
+                </label>
+
+                <label class="card__input-deadline-wrap">
+                  <input class="card__time"
+                         type="text"
+                         placeholder="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
+                         name="time"
+                         value="${dueDate.toLocaleString(`en-GB`, {hour: `numeric`, minute: `numeric`})}"
+                  >
+                </label>
+              </fieldset>
+            </div>
+
             <div class="card__hashtag">
               <div class="card__hashtag-list">
                 ${generateTags(tags)}
               </div>
             </div>
+
           </div>
+
+          <label class="card__img-wrap ">
+            <img src="${picture}" alt="task picture" class="card__img">
+          </label>
+
         </div>
-     </article>`
+      </div>
+    </article>`
   );
 };
 
