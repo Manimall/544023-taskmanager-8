@@ -6,6 +6,7 @@ import {returnColorsTemplate} from './generate-tasks-colors.js';
 import {generateTags} from './generate-hashtag.js';
 
 import moment from 'moment';
+import flatpickr from 'flatpickr';
 
 
 export class TaskEdit extends Component {
@@ -27,14 +28,14 @@ export class TaskEdit extends Component {
 
     this._state = {
       isEdit: true,
-      hasDeadline: false,
+      hasDeadline: obj.hasDeadline,
       isRepeated: this._isRepeating(),
     };
 
     this._onSubmit = null;
 
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
-    this._onChangeDate = this._onChangeDate.bind(this);
+    this._onChangeDate = this._onDateChange.bind(this);
     this._onColorChange = this._onColorChange.bind(this);
     this._onChangeRepeatedDays = this._onChangeRepeatedDays.bind(this);
   }
@@ -155,24 +156,46 @@ export class TaskEdit extends Component {
     this._tags = obj.tags;
     this._color = obj.color;
     this._repeatingDays = obj.repeatingDays;
+    this._hasDeadline = this._state.hasDeadline;
   }
 
   bind() {
     this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__colors-wrap`).addEventListener(`change`, this._onColorChange);
+    this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onDateChange);
+
+    const dueDatePicker = this._element.querySelector(`.card__date`);
+    const dueTimePicker = this._element.querySelector(`.card__time`);
+
+    if (this._state.hasDeadline) {
+      flatpickr(dueDatePicker, {
+        altInput: true,
+        altFormat: `j F`,
+        dateFormat: `j F`
+      });
+      flatpickr(dueTimePicker, {
+        enableTime: true,
+        noCalendar: true,
+        altInput: true,
+        altFormat: `h:i K`,
+        dateFormat: `h:i K`
+      });
+    }
   }
 
   unbind() {
     this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__colors-wrap`).removeEventListener(`change`, this._onColorChange);
+    this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onDateChange);
   }
 
-  _onChangeDate() {
+  _onDateChange() {
     this._state.hasDeadline = !this._state.hasDeadline;
-    this.unrender();
-    this.render();
+    this.unbind();
+    this._partialUpdate();
+    this.bind();
   }
 
   _onTitleChange(evt) {
@@ -194,6 +217,7 @@ export class TaskEdit extends Component {
         tags: this._tags,
         repeatingDays: this._repeatingDays,
         dueDate: this._dueDate,
+        hasDeadline: this._state.hasDeadline
       };
 
       fn(updates);
@@ -206,6 +230,6 @@ export class TaskEdit extends Component {
   }
 
   _onChangeRepeatedDays() {
-
+    this._state.isRepeated = !this._state.isRepeated;
   }
 }

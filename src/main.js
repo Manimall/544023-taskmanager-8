@@ -43,13 +43,9 @@ const getReadyTasks = (tasksAmount) => {
     };
 
     singleTaskEdit.onSubmit = (newObject) => {
-      singleTask.title = newObject.title;
-      singleTask.tags = newObject.tags;
-      singleTask.color = newObject.color;
-      singleTask.repeatingDays = newObject.repeatingDays;
-      singleTask.dueDate = newObject.dueDate;
+      Object.assign(el, newObject);
 
-      singleTask.update(newObject);
+      singleTask.update(el);
       singleTask.render();
       taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
       singleTaskEdit.unrender();
