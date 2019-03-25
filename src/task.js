@@ -35,6 +35,14 @@ export class Task extends Component {
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
+  _isExpiredTask(dueDate) {
+    return dueDate ? (Date.now() - dueDate.getTime()) > 0 : false;
+  }
+
+  isRepeating() {
+    return Object.values(this._repeatingDays).some((it) => it === true);
+  }
+
   get templateArgs() {
     return {
       title: this._title,

@@ -23,27 +23,16 @@ const insertFiltersBlock = (filterBlock) => {
 
 
 const createTasks = (cardsAmount) => {
-  return new Array(parseInt(cardsAmount, 10))
-    .fill()
-    .map((el, id) => {
-      const data = createCard(id);
-
-      const task = new Task(data);
-      const taskEdit = new TaskEdit(data);
-
-      return {
-        task,
-        taskEdit,
-      };
-    });
+  return new Array(cardsAmount).fill(null).map((el, id) => createCard(id));
 };
 
 
 const getReadyTasks = (tasksAmount) => {
 
   createTasks(tasksAmount).forEach((el) => {
-    const singleTask = el.task;
-    const singleTaskEdit = el.taskEdit;
+
+    const singleTask = new Task(el);
+    const singleTaskEdit = new TaskEdit(el);
 
     const renderedTask = singleTask.render(generateDefaultTask);
 
@@ -54,8 +43,14 @@ const getReadyTasks = (tasksAmount) => {
       singleTask.unrender();
     };
 
-    singleTaskEdit.onSubmit = () => {
+    singleTaskEdit.onSubmit = (newObject) => {
+      singleTask.title = newObject.title;
+      singleTask.tags = newObject.tags;
+      singleTask.color = newObject.color;
+      singleTask.repeatingDays = newObject.repeatingDays;
+      singleTask.dueDate = newObject.dueDate;
 
+      singleTask.update(el);
       singleTask.render(generateDefaultTask);
       taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
       singleTaskEdit.unrender();
@@ -64,7 +59,6 @@ const getReadyTasks = (tasksAmount) => {
     taskContainer.appendChild(renderedTask);
   });
 };
-
 
 getReadyTasks(TASKS_COUNT);
 

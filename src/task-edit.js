@@ -1,4 +1,5 @@
 import {Component} from './component.js';
+import {Colors} from './tasks-data.js';
 
 export class TaskEdit extends Component {
   constructor(obj) {
@@ -26,7 +27,11 @@ export class TaskEdit extends Component {
     };
 
     this._onSubmit = null;
+
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
+    this._onChangeDate = this._onChangeDate.bind(this);
+    this._onColorChange = this._onColorChange.bind(this);
+    this._onChangeRepeatedDays = this._onChangeRepeatedDays.bind(this);
   }
 
   get templateArgs() {
@@ -54,32 +59,23 @@ export class TaskEdit extends Component {
     };
   }
 
-  _onSubmitButtonClick(evt) {
-    evt.preventDefault();
-    if (typeof this._onSubmit === `function`) {
-      this._onSubmit();
-    }
-  }
-
-  set onSubmit(fn) {
-    this._onSubmit = fn;
-  }
-
-  update(data) {
-    this._title = data.title;
-    this._tags = data.tags;
-    this._color = data.color;
-    this._repeatingDays = data.repeatingDays;
+  update(obj) {
+    this._title = obj.title;
+    this._tags = obj.tags;
+    this._color = obj.color;
+    this._repeatingDays = obj.repeatingDays;
   }
 
   bind() {
     this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
+    this._element.querySelector(`.card__colors-wrap`).addEventListener(`change`, this._onColorChange);
   }
 
   unbind() {
     this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onChangeDate);
+    this._element.querySelector(`.card__colors-wrap`).removeEventListener(`change`, this._onColorChange);
   }
 
   _onChangeDate() {
@@ -88,7 +84,37 @@ export class TaskEdit extends Component {
     this.render();
   }
 
-  _onChangeRepeated() {
+  _onTitleChange(evt) {
+    this._title = evt.target.value;
+  }
+
+  _onColorChange(evt) {
+    this._element.classList.remove(Colors[this._color]);
+
+    this._element.classList.add(Colors[evt.target.value]);
+    this._color = evt.target.value;
+  }
+
+  set onSubmit(fn) {
+    this._onSubmit = function () {
+      const updates = {
+        title: this._title,
+        color: this._color,
+        tags: this._tags,
+        repeatingDays: this._repeatingDays,
+        dueDate: this._dueDate,
+      };
+
+      fn(updates);
+    };
+  }
+
+  _onSubmitButtonClick(evt) {
+    evt.preventDefault();
+    return typeof this._onSubmit === `function` && this._onSubmit();
+  }
+
+  _onChangeRepeatedDays() {
 
   }
 }
