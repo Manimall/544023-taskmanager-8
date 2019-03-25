@@ -23,8 +23,8 @@ export class Component {
     return {};
   }
 
-  render(getTemplate) {
-    this._element = createElement(getTemplate, this.templateArgs);
+  render() {
+    this._element = createElement(this.template);
     this.bind();
     return this._element;
   }
@@ -33,6 +33,10 @@ export class Component {
     this.unbind();
     this._element.remove();
     this._element = null;
+  }
+
+  _partialUpdate() {
+    this._element.innerHTML = this.template;
   }
 
   update() {

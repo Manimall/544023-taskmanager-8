@@ -4,7 +4,6 @@ import {createCard} from './tasks-data.js';
 import {renderSingleFilter} from './generate-filter.js';
 import {Task} from './task.js';
 import {TaskEdit} from './task-edit.js';
-import {generateEditTask, generateDefaultTask} from './templates.js';
 
 
 const TASKS_COUNT = 7; // изначальное кол-во карточек по ТЗ
@@ -34,11 +33,11 @@ const getReadyTasks = (tasksAmount) => {
     const singleTask = new Task(el);
     const singleTaskEdit = new TaskEdit(el);
 
-    const renderedTask = singleTask.render(generateDefaultTask);
+    const renderedTask = singleTask.render();
 
     singleTask.onEdit = () => {
 
-      singleTaskEdit.render(generateEditTask);
+      singleTaskEdit.render();
       taskContainer.replaceChild(singleTaskEdit.element, singleTask.element);
       singleTask.unrender();
     };
@@ -50,8 +49,8 @@ const getReadyTasks = (tasksAmount) => {
       singleTask.repeatingDays = newObject.repeatingDays;
       singleTask.dueDate = newObject.dueDate;
 
-      singleTask.update(el);
-      singleTask.render(generateDefaultTask);
+      singleTask.update(newObject);
+      singleTask.render();
       taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
       singleTaskEdit.unrender();
     };

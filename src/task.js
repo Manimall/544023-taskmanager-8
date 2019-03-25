@@ -1,6 +1,12 @@
 
 import {Component} from './component.js';
 
+import {Colors} from './tasks-data.js';
+import {generateTags} from './generate-hashtag.js';
+
+import moment from 'moment';
+
+
 export class Task extends Component {
 
   constructor(obj) {
@@ -8,8 +14,8 @@ export class Task extends Component {
 
     this._title = obj.title;
     this._id = obj.id;
-    this._dueDate = obj.dueDate;
 
+    this._dueDate = obj.dueDate;
 
     this._tags = obj.tags;
     this._picture = obj.picture;
@@ -20,12 +26,9 @@ export class Task extends Component {
     this._repeatingDays = obj.repeatingDays;
 
     this._hasDeadline = obj.hasDeadline;
-    this._hasRepeat = obj.hasRepeat;
 
     this._isFavorite = obj.isFavorite;
     this._isDone = obj.isDone;
-
-    this._isRepeating = obj.isRepeating;
 
     this._state = {
       isEdit: false,
@@ -39,31 +42,81 @@ export class Task extends Component {
     return dueDate ? (Date.now() - dueDate.getTime()) > 0 : false;
   }
 
-  isRepeating() {
+  _isRepeating() {
     return Object.values(this._repeatingDays).some((it) => it === true);
   }
 
-  get templateArgs() {
-    return {
-      title: this._title,
-      id: this._id,
+  get template() {
+    return (
+      `<article class="card
+                  ${Colors[this._color]}
+                  ${this._isRepeating(this._repeatingDays) ? `card--repeat` : ``}
+                  ${this._isExpiredTask(this._dueDate) ? `card--deadline` : ``}"
+                  id="${this._id}"
 
-      isRepeating: this._isRepeating,
+        >
+        <div class="card__inner">
+          <div class="card__control">
+            <button type="button" class="card__btn card__btn--edit">edit</button>
+            <button type="button" class="card__btn card__btn--archive">archive</button>
+            <button type="button" class="card__btn card__btn--favorites card__btn--disabled">favorites</button>
+          </div>
 
-      dueDate: this._dueDate,
-      repeatingDays: this._repeatingDays,
+          <div class="card__color-bar">
+            <svg class="card__color-bar-wave" width="100%" height="10">
+              <use xlink:href="#wave"></use>
+            </svg>
+          </div>
 
-      tags: this._tags,
-      picture: this._picture,
+          <div class="card__textarea-wrap">
+            <label>
+              <textarea class="card__text" placeholder="Start typing your text here..." name="text">${this._title}</textarea>
+            </label>
+          </div>
 
-      color: this._color,
 
-      hasDeadline: this._hasDeadline,
-      hasRepeat: this._hasRepeat,
+          <div class="card__settings">
+            <div class="card__details">
 
-      isFavorite: this._isFavorite,
-      isDone: this._isDone,
-    };
+              <div class="card__dates">
+
+                <fieldset class="card__date-deadline" ${this._hasDeadline ? `disabled` : `` }>
+                  <label class="card__input-deadline-wrap">
+                    <input class="card__date"
+                            type="text"
+                            placeholder="${this._dueDate ? moment(this._dueDate).format(`D MMMM`) : ``}"
+                            name="date"
+                            value="${this._dueDate ? moment(this._dueDate).format(`D MMMM`) : ``}"
+                    >
+                  </label>
+
+                  <label class="card__input-deadline-wrap">
+                    <input class="card__time"
+                            type="text"
+                            placeholder="${this._dueDate ? moment(this._dueDate).format(`hh:mm A`) : ``}"
+                            name="time"
+                            value="${this._dueDate ? moment(this._dueDate).format(`hh:mm A`) : ``}"
+                    >
+                  </label>
+                </fieldset>
+              </div>
+
+              <div class="card__hashtag">
+                <div class="card__hashtag-list">
+                  ${generateTags(this._tags)}
+                </div>
+              </div>
+
+            </div>
+
+            <label class="card__img-wrap ">
+              <img src="${this._picture}" alt="task picture" class="card__img">
+            </label>
+
+          </div>
+        </div>
+      </article>`
+    );
   }
 
   set onEdit(fn) {

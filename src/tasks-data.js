@@ -60,11 +60,6 @@ const generateMockDate = () => {
   return new Date(getRandomNumber(dateNow.getTime() - MS_IN_WEEK, dateNow.getTime() + MS_IN_WEEK));
 };
 
-const isRepeating = (days) => {
-  return Object.values(days).some((day) => day === true);
-};
-
-
 /**
  * Создаем карточки сопределенными по ТЗ данными
  * @param {Number} id - id (index) карточки
@@ -79,13 +74,11 @@ const createCard = (id) => {
     color: Object.keys(Colors)[Math.floor(Math.random() * Object.keys(Colors).length)],
     repeatingDays: generateRepeatingDays(repeatingDays),
     hasDeadline: returnTrueOrFalse(), // есть ли дедлайн у карточки
-    hasRepeat: returnTrueOrFalse(), // повторяется ли данная карточка
     isFavorite: returnTrueOrFalse(), // Булево значение сообщающее, добавлена ли задача в избранное.
     isDone: returnTrueOrFalse(), // Булево значение сообщающее, выполнена ли задача
-    isRepeating: isRepeating(repeatingDays), // повторяемая ли карточка
     id,
     isEdit: returnTrueOrFalse() // id карточки
   };
 };
 
-export {Colors, isRepeating, createCard};
+export {Colors, createCard};
