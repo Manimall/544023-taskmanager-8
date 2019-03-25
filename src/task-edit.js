@@ -257,16 +257,12 @@ export class TaskEdit extends Component {
     return typeof this._onSubmit === `function` && this._onSubmit(newData);
   }
 
-  _onChangeRepeatedDays() {
-    this._state.isRepeated = !this._state.isRepeated;
-  }
-
   // собираем данные из формы и приводим их к нужному виду
   static createMapper(target) {
     return {
-      hashtag: (value) => target.tags.add(value),
-      text: (value) => (target.title = value),
+      title: (value) => (target.title = value),
       color: (value) => (target.color = value),
+      hashtag: (value) => target.tags.add(value),
       date: (value) => (target.dueDate = value),
       repeatingDays: (value) => (target.repeatingDays[value] = true),
     };
