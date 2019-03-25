@@ -37,7 +37,7 @@ export class TaskEdit extends Component {
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
     this._onChangeDate = this._onDateChange.bind(this);
     this._onColorChange = this._onColorChange.bind(this);
-    this._onChangeRepeatedDays = this._onChangeRepeatedDays.bind(this);
+    this._onRepeatedDaysChange = this._onRepeatedDaysChange.bind(this);
   }
 
   _isExpiredTask(dueDate) {
@@ -156,7 +156,8 @@ export class TaskEdit extends Component {
     this._tags = obj.tags;
     this._color = obj.color;
     this._repeatingDays = obj.repeatingDays;
-    this._hasDeadline = this._state.hasDeadline;
+    this._hasDeadline = obj._state.hasDeadline;
+    this._dueDate = obj.dueDate;
   }
 
   bind() {
@@ -164,6 +165,7 @@ export class TaskEdit extends Component {
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__colors-wrap`).addEventListener(`change`, this._onColorChange);
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onDateChange);
+    this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onRepeatedDaysChange);
 
     const dueDatePicker = this._element.querySelector(`.card__date`);
     const dueTimePicker = this._element.querySelector(`.card__time`);
@@ -189,17 +191,21 @@ export class TaskEdit extends Component {
     this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__colors-wrap`).removeEventListener(`change`, this._onColorChange);
     this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onDateChange);
+    this._element.querySelector(`.card__repeat-toggle`).removeEventListener(`click`, this._onRepeatedDaysChange);
   }
 
   _onDateChange() {
     this._state.hasDeadline = !this._state.hasDeadline;
-    this.unbind();
-    this._partialUpdate();
-    this.bind();
+    this._adAndRemoveListeners();
   }
 
   _onTitleChange(evt) {
     this._title = evt.target.value;
+  }
+
+  _onRepeatedDaysChange() {
+    this._state.isRepeated = !this._state.isRepeated;
+    this._adAndRemoveListeners();
   }
 
   _onColorChange(evt) {
@@ -210,26 +216,60 @@ export class TaskEdit extends Component {
   }
 
   set onSubmit(fn) {
-    this._onSubmit = function () {
-      const updates = {
-        title: this._title,
-        color: this._color,
-        tags: this._tags,
-        repeatingDays: this._repeatingDays,
-        dueDate: this._dueDate,
-        hasDeadline: this._state.hasDeadline
-      };
+    this._onSubmit = fn;
+  }
 
-      fn(updates);
+  _processForm(formData) {
+    const entry = {
+      title: ``,
+      color: ``,
+      tags: new Set(),
+      dueDate: new Date(),
+      repeatingDays: {
+        'mo': false,
+        'tu': false,
+        'we': false,
+        'th': false,
+        'fr': false,
+        'sa': false,
+        'su': false,
+      },
     };
+
+    const taskEditMapper = TaskEdit.createMapper(entry);
+
+    for (const pair of formData.entries()) {
+      const [key, value] = pair;
+      if (taskEditMapper.hasOwnProperty(key)) {
+        taskEditMapper[key](value);
+      }
+    }
+
+    return entry;
   }
 
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
-    return typeof this._onSubmit === `function` && this._onSubmit();
+
+    const formData = new FormData(this._element.querySelector(`.card__form`));
+    const newData = this._processForm(formData);
+
+    return typeof this._onSubmit === `function` && this._onSubmit(newData);
   }
 
   _onChangeRepeatedDays() {
     this._state.isRepeated = !this._state.isRepeated;
   }
+
+  // собираем данные из формы и приводим их к нужному виду
+  static createMapper(target) {
+    return {
+      hashtag: (value) => target.tags.add(value),
+      text: (value) => (target.title = value),
+      color: (value) => (target.color = value),
+      date: (value) => (target.dueDate = value),
+      repeatingDays: (value) => (target.repeatingDays[value] = true),
+    };
+  }
+
 }

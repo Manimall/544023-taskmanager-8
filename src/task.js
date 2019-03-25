@@ -25,13 +25,12 @@ export class Task extends Component {
     this._id = obj.id;
     this._repeatingDays = obj.repeatingDays;
 
-    this._hasDeadline = obj.hasDeadline;
-
     this._isFavorite = obj.isFavorite;
     this._isDone = obj.isDone;
 
     this._state = {
       isEdit: false,
+      hasDeadline: obj.hasDeadline,
     };
 
     this._onEdit = null;
@@ -39,7 +38,7 @@ export class Task extends Component {
   }
 
   _isExpiredTask(dueDate) {
-    return dueDate ? (Date.now() - dueDate.getTime()) > 0 : false;
+    return dueDate ? (moment(Date.now()).unix() - moment(dueDate).unix()) > 0 : false;
   }
 
   _isRepeating() {
@@ -80,7 +79,7 @@ export class Task extends Component {
 
               <div class="card__dates">
 
-                <fieldset class="card__date-deadline" ${this._hasDeadline ? `disabled` : `` }>
+                <fieldset class="card__date-deadline" ${this._state.hasDeadline ? `` : `disabled` }>
                   <label class="card__input-deadline-wrap">
                     <input class="card__date"
                             type="text"
@@ -144,6 +143,7 @@ export class Task extends Component {
     this._tags = data.tags;
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
+    this._dueDate = data.dueDate;
   }
 
 }

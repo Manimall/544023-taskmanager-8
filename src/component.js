@@ -39,6 +39,12 @@ export class Component {
     this._element.innerHTML = this.template;
   }
 
+  _adAndRemoveListeners() {
+    this.unbind();
+    this._partialUpdate();
+    this.bind();
+  }
+
   update() {
 
   }
