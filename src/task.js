@@ -129,13 +129,11 @@ export class Task extends Component {
   }
 
   bind() {
-    this._element.querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, this._onEditButtonClick);
+    this._element.querySelector(`.card__btn--edit`).addEventListener(`click`, this._onEditButtonClick);
   }
 
   unbind() {
-    this._element.querySelector(`.card__btn--edit`)
-      .removeEventListener(`click`, this._onEditButtonClick);
+    this._element.querySelector(`.card__btn--edit`).removeEventListener(`click`, this._onEditButtonClick);
   }
 
   update(data) {
@@ -144,6 +142,12 @@ export class Task extends Component {
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
     this._dueDate = data.dueDate;
+  }
+
+  _updateState() {
+    this._state.isDate = this._isDate();
+    this._state.isRepeated = this._isRepeated();
+    this._state.isExpired = this._isExpired(this._dueDate);
   }
 
 }

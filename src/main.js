@@ -46,6 +46,7 @@ const getReadyTasks = (tasksAmount) => {
       Object.assign(el, newObject);
 
       singleTask.update(el);
+
       singleTask.render();
       taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
       singleTaskEdit.unrender();

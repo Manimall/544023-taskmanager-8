@@ -38,6 +38,8 @@ export class TaskEdit extends Component {
     this._onChangeDate = this._onDateChange.bind(this);
     this._onColorChange = this._onColorChange.bind(this);
     this._onRepeatedDaysChange = this._onRepeatedDaysChange.bind(this);
+    this._onHashTagDelete = this._onHashTagDelete.bind(this);
+    this._onHashTagAdd = this._onHashTagAdd.bind(this);
   }
 
   _isExpiredTask(dueDate) {
@@ -156,7 +158,6 @@ export class TaskEdit extends Component {
     this._tags = obj.tags;
     this._color = obj.color;
     this._repeatingDays = obj.repeatingDays;
-    this._hasDeadline = obj._state.hasDeadline;
     this._dueDate = obj.dueDate;
   }
 
@@ -166,6 +167,8 @@ export class TaskEdit extends Component {
     this._element.querySelector(`.card__colors-wrap`).addEventListener(`change`, this._onColorChange);
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onDateChange);
     this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onRepeatedDaysChange);
+    this._element.querySelector(`.card__hashtag-list`).addEventListener(`click`, this._onHashTagDelete);
+    this._element.querySelector(`.card__hashtag-input`).addEventListener(`input`, this._onHashTagAdd);
 
     const dueDatePicker = this._element.querySelector(`.card__date`);
     const dueTimePicker = this._element.querySelector(`.card__time`);
@@ -192,6 +195,8 @@ export class TaskEdit extends Component {
     this._element.querySelector(`.card__colors-wrap`).removeEventListener(`change`, this._onColorChange);
     this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onDateChange);
     this._element.querySelector(`.card__repeat-toggle`).removeEventListener(`click`, this._onRepeatedDaysChange);
+    this._element.querySelector(`.card__hashtag-list`).removeEventListener(`click`, this._onHashTagDelete);
+    this._element.querySelector(`.card__hashtag-input`).removeEventListener(`input`, this._onHashTagAdd);
   }
 
   _onDateChange() {
@@ -206,6 +211,22 @@ export class TaskEdit extends Component {
   _onRepeatedDaysChange() {
     this._state.isRepeated = !this._state.isRepeated;
     this._adAndRemoveListeners();
+  }
+
+  _onHashTagDelete(evt) {
+    evt.preventDefault();
+
+    if (evt.target.classList.contains(`card__hashtag-delete`)) {
+      const hashtagValue = evt.target.parentNode.querySelector(`.card__hashtag-hidden-input`).value;
+      new Set(this._tags).delete(hashtagValue);
+      evt.target.closest(`.card__hashtag-inner`).remove();
+    }
+  }
+
+  _onHashTagAdd(evt) {
+    evt.preventDefault();
+
+
   }
 
   _onColorChange(evt) {
@@ -254,7 +275,11 @@ export class TaskEdit extends Component {
     const formData = new FormData(this._element.querySelector(`.card__form`));
     const newData = this._processForm(formData);
 
-    return typeof this._onSubmit === `function` && this._onSubmit(newData);
+    if (typeof this._onSubmit === `function`) {
+      this._onSubmit(newData);
+    }
+
+    this.update(newData);
   }
 
   // собираем данные из формы и приводим их к нужному виду
@@ -264,7 +289,7 @@ export class TaskEdit extends Component {
       color: (value) => (target.color = value),
       hashtag: (value) => target.tags.add(value),
       date: (value) => (target.dueDate = value),
-      repeatingDays: (value) => (target.repeatingDays[value] = true),
+      repeat: (value) => (target.repeatingDays[value] = true),
     };
   }
 
