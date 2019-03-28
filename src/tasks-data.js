@@ -73,7 +73,7 @@ const createCard = (id) => {
     picture: `http://picsum.photos/100/100?r=${Math.random()})`, // URL до рандомной картинки
     color: Object.keys(Colors)[Math.floor(Math.random() * Object.keys(Colors).length)],
     repeatingDays: generateRepeatingDays(repeatingDays),
-    hasDeadline: returnTrueOrFalse(), // есть ли дедлайн у карточки
+    hasDate: returnTrueOrFalse(), // есть ли дедлайн у карточки
     isFavorite: returnTrueOrFalse(), // Булево значение сообщающее, добавлена ли задача в избранное.
     isDone: returnTrueOrFalse(), // Булево значение сообщающее, выполнена ли задача
     id,

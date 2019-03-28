@@ -9,6 +9,8 @@ export class Component {
 
     this._element = null;
     this._state = {};
+
+    this._adAndRemoveListeners = this._adAndRemoveListeners.bind(this);
   }
 
   get element() {
@@ -18,10 +20,6 @@ export class Component {
   bind() {}
 
   unbind() {}
-
-  get templateArgs() {
-    return {};
-  }
 
   render() {
     this._element = createElement(this.template);

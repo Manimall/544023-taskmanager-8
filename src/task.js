@@ -16,6 +16,7 @@ export class Task extends Component {
     this._id = obj.id;
 
     this._dueDate = obj.dueDate;
+    this._hasDate = obj.hasDate;
 
     this._tags = obj.tags;
     this._picture = obj.picture;
@@ -37,8 +38,12 @@ export class Task extends Component {
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
-  _isExpiredTask(dueDate) {
-    return dueDate ? (moment(Date.now()).unix() - moment(dueDate).unix()) > 0 : false;
+  // определяем просрочен ли Таск
+  _isExpired() {
+    if (this._dueDate && this._hasDate) {
+      return Date.now() > this._dueDate;
+    }
+    return false;
   }
 
   _isRepeating() {
@@ -50,7 +55,7 @@ export class Task extends Component {
       `<article class="card
                   ${Colors[this._color]}
                   ${this._isRepeating(this._repeatingDays) ? `card--repeat` : ``}
-                  ${this._isExpiredTask(this._dueDate) ? `card--deadline` : ``}"
+                  ${this._isExpired() ? `card--deadline` : ``}"
                   id="${this._id}"
 
         >
@@ -79,7 +84,7 @@ export class Task extends Component {
 
               <div class="card__dates">
 
-                <fieldset class="card__date-deadline" ${this._state.hasDeadline ? `` : `disabled` }>
+                <fieldset class="card__date-deadline" ${this._hasDate ? `` : `disabled` }>
                   <label class="card__input-deadline-wrap">
                     <input class="card__date"
                             type="text"
@@ -147,7 +152,7 @@ export class Task extends Component {
   _updateState() {
     this._state.isDate = this._isDate();
     this._state.isRepeated = this._isRepeated();
-    this._state.isExpired = this._isExpired(this._dueDate);
+    this._state.isExpired = this._isExpired();
   }
 
 }

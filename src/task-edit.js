@@ -14,6 +14,7 @@ export class TaskEdit extends Component {
     super();
     this._title = obj.title;
     this._dueDate = obj.dueDate;
+    this._hasDate = obj.hasDate;
 
     this._tags = obj.tags;
     this._picture = obj.picture;
@@ -28,7 +29,6 @@ export class TaskEdit extends Component {
 
     this._state = {
       isEdit: true,
-      hasDeadline: obj.hasDeadline,
       isRepeated: this._isRepeating(),
     };
 
@@ -42,12 +42,39 @@ export class TaskEdit extends Component {
     this._onHashTagAdd = this._onHashTagAdd.bind(this);
   }
 
-  _isExpiredTask(dueDate) {
-    return dueDate ? (Date.now() - dueDate.getTime()) > 0 : false;
+  // определяем просрочен ли Таск
+  _isExpired() {
+    if (this._dueDate) {
+      return Date.now() > this._dueDate;
+    }
+    return false;
   }
 
   _isRepeating() {
     return Object.values(this._repeatingDays).some((it) => it === true);
+  }
+
+  _getDueDateMarkup() {
+    return `<fieldset class="card__date-deadline">
+              <label class="card__input-deadline-wrap">
+                <input
+                  class="card__date"
+                  type="text"
+                  placeholder="${this._dueDate ? moment(this._dueDate).format(`DD MMMM`) : moment().add(1, `days`).format(`DD MMMM`)}"
+                  name="date"
+                  value="${this._dueDate ? moment(this._dueDate).format(`DD MMMM`) : moment().add(1, `days`).format(`DD MMMM`)}"
+                />
+              </label>
+              <label class="card__input-deadline-wrap">
+                <input
+                  class="card__time"
+                  type="text"
+                  placeholder="${this._dueDate ? moment(this._dueDate).format(`hh:mm a`) : moment().add(1, `days`).format(`hh:mm a`)}"
+                  name="time"
+                  value="${this._dueDate ? moment(this._dueDate).format(`hh:mm a`) : moment().add(1, `days`).format(`hh:mm a`)}"
+                />
+              </label>
+            </fieldset>`;
   }
 
   get template() {
@@ -56,7 +83,7 @@ export class TaskEdit extends Component {
                     ${this._state.isEdit ? `card--edit` : ``}
                     ${this._isRepeating() ? `card--repeat` : ``}
                     ${Colors[this._color]}
-                    ${this._isExpiredTask(this._dueDate) ? `card--deadline` : ``}"
+                    ${this._isExpired() ? `card--deadline` : ``}"
                     id="${this._id}"
         >
           <form class="card__form" method="get">
@@ -90,27 +117,10 @@ export class TaskEdit extends Component {
               <div class="card__details">
                 <div class="card__dates">
                   <button class="card__date-deadline-toggle" type="button">
-                    date: <span class="card__date-status">${this._state.hasDeadline ? `yes` : `no`}</span>
+                    date: <span class="card__date-status">${this._hasDate ? `yes` : `no`}</span>
                   </button>
 
-                  <fieldset class="card__date-deadline" ${!this._state.hasDeadline ? `disabled` : `` }>
-                    <label class="card__input-deadline-wrap">
-                      <input class="card__date"
-                            type="text"
-                            name="date"
-                            value="${this._dueDate ? moment(this._dueDate).format(`D MMMM`) : ``}"
-                            placeholder="${this._dueDate ? moment(this._dueDate).format(`D MMMM`) : ``}"
-                      >
-                    </label>
-                    <label class="card__input-deadline-wrap">
-                      <input class="card__time"
-                            type="text"
-                            name="time"
-                            value="${this._dueDate ? moment(this._dueDate).format(`hh:mm A`) : ``}"
-                            placeholder="${this._dueDate ? moment(this._dueDate).format(`hh:mm A`) : ``}"
-                      >
-                    </label>
-                  </fieldset>
+                  ${this._hasDate ? `${this._getDueDateMarkup()}` : ``}
 
                   <button class="card__repeat-toggle" type="button">
                     repeat:<span class="card__repeat-status">${this._state.isRepeated ? `yes` : `no`}</span>
@@ -123,7 +133,7 @@ export class TaskEdit extends Component {
 
                 <div class="card__hashtag">
                   <div class="card__hashtag-list">
-                    ${generateTags(this._tags)}
+                    ${this._tags ? generateTags(this._tags) : ``}
                   </div>
 
                   <label>
@@ -163,49 +173,48 @@ export class TaskEdit extends Component {
 
   bind() {
     this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
-    this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__colors-wrap`).addEventListener(`change`, this._onColorChange);
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onDateChange);
     this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onRepeatedDaysChange);
     this._element.querySelector(`.card__hashtag-list`).addEventListener(`click`, this._onHashTagDelete);
-    this._element.querySelector(`.card__hashtag-input`).addEventListener(`input`, this._onHashTagAdd);
+    this._element.querySelector(`.card__hashtag-input`).addEventListener(`keydown`, this._onHashTagAdd);
 
-    const dueDatePicker = this._element.querySelector(`.card__date`);
-    const dueTimePicker = this._element.querySelector(`.card__time`);
-
-    if (this._state.hasDeadline) {
-      flatpickr(dueDatePicker, {
-        altInput: true,
-        altFormat: `j F`,
-        dateFormat: `j F`
-      });
-      flatpickr(dueTimePicker, {
-        enableTime: true,
-        noCalendar: true,
-        altInput: true,
-        altFormat: `h:i K`,
-        dateFormat: `h:i K`
-      });
+    if (this._dueDate) {
+      this._setUpFlatpickr();
     }
   }
 
   unbind() {
     this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
-    this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__colors-wrap`).removeEventListener(`change`, this._onColorChange);
     this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onDateChange);
     this._element.querySelector(`.card__repeat-toggle`).removeEventListener(`click`, this._onRepeatedDaysChange);
     this._element.querySelector(`.card__hashtag-list`).removeEventListener(`click`, this._onHashTagDelete);
-    this._element.querySelector(`.card__hashtag-input`).removeEventListener(`input`, this._onHashTagAdd);
+    this._element.querySelector(`.card__hashtag-input`).removeEventListener(`keydown`, this._onHashTagAdd);
   }
+
 
   _onDateChange() {
-    this._state.hasDeadline = !this._state.hasDeadline;
-    this._adAndRemoveListeners();
+    this._dueDate = !this._dueDate;
+    this.adAndRemoveListeners();
   }
 
-  _onTitleChange(evt) {
-    this._title = evt.target.value;
+  _setUpFlatpickr() {
+    flatpickr(this._element.querySelector(`.card__date`), {
+      altInput: true,
+      altFormat: `j F`,
+      dateFormat: `j F`,
+      onChange: (selectedDates) => {
+        this._onDateChange(selectedDates[0]);
+      },
+    });
+    flatpickr(this._element.querySelector(`.card__time`), {
+      enableTime: true,
+      noCalendar: true,
+      altInput: true,
+      altFormat: `h:i K`,
+      dateFormat: `h:i K`
+    });
   }
 
   _onRepeatedDaysChange() {
@@ -226,10 +235,10 @@ export class TaskEdit extends Component {
   _onHashTagAdd(evt) {
     evt.preventDefault();
 
-
   }
 
   _onColorChange(evt) {
+
     this._element.classList.remove(Colors[this._color]);
 
     this._element.classList.add(Colors[evt.target.value]);
@@ -285,7 +294,7 @@ export class TaskEdit extends Component {
   // собираем данные из формы и приводим их к нужному виду
   static createMapper(target) {
     return {
-      title: (value) => (target.title = value),
+      text: (value) => (target.title = value),
       color: (value) => (target.color = value),
       hashtag: (value) => target.tags.add(value),
       date: (value) => (target.dueDate = value),
