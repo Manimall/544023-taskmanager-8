@@ -31,7 +31,6 @@ export class Task extends Component {
 
     this._state = {
       isEdit: false,
-      hasDeadline: obj.hasDeadline,
       isRepeated: this._isRepeating(),
     };
 
@@ -154,6 +153,11 @@ export class Task extends Component {
     this._repeatingDays = data.repeatingDays;
     this._dueDate = data.dueDate;
     this._hasDate = data.hasDate;
+    this._updateState();
+  }
+
+  _updateState() {
+    this._state.isRepeated = this._isRepeating();
   }
 
 }
