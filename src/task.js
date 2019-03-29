@@ -32,6 +32,7 @@ export class Task extends Component {
     this._state = {
       isEdit: false,
       hasDeadline: obj.hasDeadline,
+      isRepeated: this._isRepeating(),
     };
 
     this._onEdit = null;
@@ -50,11 +51,35 @@ export class Task extends Component {
     return Object.values(this._repeatingDays).some((it) => it === true);
   }
 
+  _getDueDateMarkup() {
+    return `
+      <fieldset class="card__date-deadline" ${this._hasDate ? `` : `disabled` }>
+        <label class="card__input-deadline-wrap">
+          <input class="card__date"
+                  type="text"
+                  placeholder="${this._dueDate ? moment(this._dueDate).format(`D MMMM YY`) : ``}"
+                  name="date"
+                  value="${this._dueDate ? moment(this._dueDate).format(`D MMMM YY`) : ``}"
+          >
+        </label>
+
+        <label class="card__input-deadline-wrap">
+          <input class="card__time"
+                  type="text"
+                  placeholder="${this._dueDate ? moment(this._dueDate).format(`hh:mm A`) : ``}"
+                  name="time"
+                  value="${this._dueDate ? moment(this._dueDate).format(`hh:mm A`) : ``}"
+          >
+        </label>
+      </fieldset>
+    `;
+  }
+
   get template() {
     return (
       `<article class="card
                   ${Colors[this._color]}
-                  ${this._isRepeating(this._repeatingDays) ? `card--repeat` : ``}
+                  ${this._state.isRepeated ? `card--repeat` : ``}
                   ${this._isExpired() ? `card--deadline` : ``}"
                   id="${this._id}"
 
@@ -83,26 +108,7 @@ export class Task extends Component {
             <div class="card__details">
 
               <div class="card__dates">
-
-                <fieldset class="card__date-deadline" ${this._hasDate ? `` : `disabled` }>
-                  <label class="card__input-deadline-wrap">
-                    <input class="card__date"
-                            type="text"
-                            placeholder="${this._dueDate ? moment(this._dueDate).format(`D MMMM`) : ``}"
-                            name="date"
-                            value="${this._dueDate ? moment(this._dueDate).format(`D MMMM`) : ``}"
-                    >
-                  </label>
-
-                  <label class="card__input-deadline-wrap">
-                    <input class="card__time"
-                            type="text"
-                            placeholder="${this._dueDate ? moment(this._dueDate).format(`hh:mm A`) : ``}"
-                            name="time"
-                            value="${this._dueDate ? moment(this._dueDate).format(`hh:mm A`) : ``}"
-                    >
-                  </label>
-                </fieldset>
+                ${this._getDueDateMarkup()}
               </div>
 
               <div class="card__hashtag">
@@ -147,12 +153,7 @@ export class Task extends Component {
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
     this._dueDate = data.dueDate;
-  }
-
-  _updateState() {
-    this._state.isDate = this._isDate();
-    this._state.isRepeated = this._isRepeated();
-    this._state.isExpired = this._isExpired();
+    this._hasDate = data.hasDate;
   }
 
 }

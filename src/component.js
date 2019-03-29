@@ -47,4 +47,13 @@ export class Component {
 
   }
 
+  _updateElement() {
+    const newElement = createElement(this.template);
+
+    this.unbind();
+    this._element.parentNode.replaceChild(newElement, this._element);
+    this._element = newElement;
+    this.bind();
+  }
+
 }

@@ -21,5 +21,10 @@ const createElement = (template) => {
   return newElement.firstChild;
 };
 
+const KeyCodes = {
+  ESC: 27,
+  ENTER: 13
+};
 
-export {getRandomNumber, returnTrueOrFalse, createElement};
+
+export {getRandomNumber, returnTrueOrFalse, createElement, KeyCodes};
