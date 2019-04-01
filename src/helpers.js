@@ -15,11 +15,16 @@ const getRandomNumber = (min = 0, max = 10) => {
 const returnTrueOrFalse = () => Math.random() > 0.5;
 
 
-const createElement = (getTemplate, templateArgs) => {
+const createElement = (template) => {
   const newElement = document.createElement(`div`);
-  newElement.innerHTML = getTemplate(templateArgs);
+  newElement.innerHTML = template;
   return newElement.firstChild;
 };
 
+const KeyCodes = {
+  ESC: 27,
+  ENTER: 13
+};
 
-export {getRandomNumber, returnTrueOrFalse, createElement};
+
+export {getRandomNumber, returnTrueOrFalse, createElement, KeyCodes};

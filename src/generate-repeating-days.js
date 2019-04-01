@@ -4,7 +4,7 @@
  * @return {String} - разметку с заполненными данными о том, повторяется ли задача в любой день недели
  */
 export const generateRepeatingDays = (repeatingDays) => {
-  return Object.keys(repeatingDays).map((key) => `
+  const repeatingDaysLayout = Object.keys(repeatingDays).map((key) => `
     <input class="visually-hidden card__repeat-day-input"
             type="checkbox"
             id="repeat-${key}-1"
@@ -16,4 +16,10 @@ export const generateRepeatingDays = (repeatingDays) => {
       ${key}
     </label>
     `).join(``);
+
+  return (
+    `<div class="card__repeat-days-inner">
+      ${repeatingDaysLayout}
+    </div>`
+  );
 };

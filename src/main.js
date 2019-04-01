@@ -4,7 +4,6 @@ import {createCard} from './tasks-data.js';
 import {renderSingleFilter} from './generate-filter.js';
 import {Task} from './task.js';
 import {TaskEdit} from './task-edit.js';
-import {generateEditTask, generateDefaultTask} from './template.js';
 
 
 const TASKS_COUNT = 7; // изначальное кол-во карточек по ТЗ
@@ -21,39 +20,34 @@ const insertFiltersBlock = (filterBlock) => {
   filterBlock.insertAdjacentHTML(`afterbegin`, renderedFilter);
 };
 
+
 const createTasks = (cardsAmount) => {
-  return new Array(parseInt(cardsAmount, 10))
-    .fill()
-    .map((el, id) => {
-      const data = createCard(id);
-
-      const task = new Task(data);
-      const taskEdit = new TaskEdit(data);
-
-      return {
-        task,
-        taskEdit,
-      };
-    });
+  return new Array(cardsAmount).fill(null).map((el, id) => createCard(id));
 };
 
 
 const getReadyTasks = (tasksAmount) => {
 
   createTasks(tasksAmount).forEach((el) => {
-    const singleTask = el.task;
-    const singleTaskEdit = el.taskEdit;
 
-    const renderedTask = singleTask.render(generateDefaultTask);
+    const singleTask = new Task(el);
+    const singleTaskEdit = new TaskEdit(el);
+
+    const renderedTask = singleTask.render();
 
     singleTask.onEdit = () => {
-      singleTaskEdit.render(generateEditTask);
+
+      singleTaskEdit.render();
       taskContainer.replaceChild(singleTaskEdit.element, singleTask.element);
       singleTask.unrender();
     };
 
-    singleTaskEdit.onSubmit = () => {
-      singleTask.render(generateDefaultTask);
+    singleTaskEdit.onSubmit = (newObject) => {
+      Object.assign(el, newObject);
+
+      singleTask.update(el);
+
+      singleTask.render();
       taskContainer.replaceChild(singleTask.element, singleTaskEdit.element);
       singleTaskEdit.unrender();
     };
@@ -61,7 +55,6 @@ const getReadyTasks = (tasksAmount) => {
     taskContainer.appendChild(renderedTask);
   });
 };
-
 
 getReadyTasks(TASKS_COUNT);
 
